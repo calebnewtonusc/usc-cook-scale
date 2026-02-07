@@ -40,15 +40,24 @@ export async function parseScheduleText(scheduleText: string): Promise<Array<{co
       max_tokens: 2000,
       messages: [{
         role: 'user',
-        content: `Parse this USC schedule into a JSON array. Extract course name, professor name, and units (estimate 4 if not specified).
+        content: `You are an expert at parsing USC course schedules from any format - structured tables, conversational text, bullet points, or natural language.
+
+Extract all courses from this text and return them as JSON. Be VERY flexible and intelligent:
+
+- Handle conversational language ("So Mark, what are your courses...", "I'm taking...", etc.)
+- Extract course codes/names (e.g., "Chem 105B", "CSCI 104", "Spanish 150", "GESM 110")
+- Extract professor names (including complex names like "Consuelo-Siguenza Ortiz", "Watts/Bearacat")
+- Extract units (convert "four units" → 4, "three units" → 3, etc. Default to 4 if not mentioned)
+- Ignore filler words, questions, and conversational fluff
+- Be smart about abbreviations (Prof, Professor, etc.)
 
 Schedule text:
 ${scheduleText}
 
-Return ONLY valid JSON in this exact format, no other text:
-[{"courseName": "CSCI 104", "professor": "John Smith", "units": 4}]
+Return ONLY valid JSON array, no explanations or other text:
+[{"courseName": "CHEM 105B", "professor": "Moon", "units": 4}]
 
-If you cannot parse the schedule, return an empty array: []`
+If there are absolutely NO courses mentioned, return: []`
       }]
     });
 
@@ -60,7 +69,12 @@ If you cannot parse the schedule, return an empty array: []`
     const jsonMatch = response.match(/\[[\s\S]*\]/);
     const jsonStr = jsonMatch ? jsonMatch[0] : '[]';
 
-    return JSON.parse(jsonStr);
+    const parsed = JSON.parse(jsonStr);
+
+    // Log successful parse
+    console.log(`Parsed ${parsed.length} classes from schedule text`);
+
+    return parsed;
   } catch (error) {
     console.error('Error parsing schedule:', error);
     return [];
