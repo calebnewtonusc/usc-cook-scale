@@ -1,14 +1,55 @@
-# USC Cook Scale 🔥
+# 🔥 USC Cook Scale 🔥
 
-Find out how "cooked" your USC semester schedule really is! Upload your schedule and get an objective rating based on class difficulty, professor ratings from RateMyProfessors, and total units.
+**Find out how "cooked" your USC semester schedule really is!**
 
-## Features
+AI-powered class difficulty analyzer that combines RateMyProfessors data with intelligent course classification to give you a "Cook Scale" score from 0-100.
 
-- **Multiple Upload Methods**: PDF, ICS (calendar), or manual entry
-- **AI-Powered Analysis**: Uses Claude AI to determine STEM vs Humanities classification
-- **Professor Ratings**: Scrapes RateMyProfessors for real student reviews
-- **Smart Scoring**: Combines class type, professor difficulty, and unit count
-- **Beautiful UI**: Clean, modern interface with red/yellow theme
+## 🚀 Live App
+
+**Try it now:** [https://usc-cook-scale.vercel.app/](https://usc-cook-scale.vercel.app/)
+
+**Backend API:** [https://usc-cook-scale-backend.vercel.app/](https://usc-cook-scale-backend.vercel.app/)
+
+---
+
+## 🎯 Quick Start
+
+1. Visit [usc-cook-scale.vercel.app](https://usc-cook-scale.vercel.app/)
+2. Paste your schedule text OR upload a file (PDF/image/calendar)
+3. Get your Cook Scale score instantly!
+
+---
+
+## ✨ Features
+
+### 🤖 **100% AI-Powered**
+- **Claude Sonnet 4.5** intelligently parses schedules from ANY format
+- Understands conversational text: "I'm taking CSCI 104 with Redekopp for 4 units"
+- Handles complex professor names, written numbers, and mixed formats
+- **NO fake data** - everything is real and legitimate
+
+### 📊 **Real RateMyProfessors Data**
+- Live scraping from RateMyProfessors GraphQL API
+- Quality ratings, difficulty scores, and "would take again" percentages
+- USC-specific professor data (schoolID: 1381)
+
+### 🎯 **Smart Classification**
+- Automatic STEM vs Humanities detection
+- Claude AI analyzes course names to categorize correctly
+- Accounts for course type in difficulty scoring
+
+### 📁 **Universal File Upload**
+- **PDF** schedules (extracted with PDF.js)
+- **Images/Screenshots** (parsed with Claude Vision)
+- **ICS/Calendar** files
+- **Plain text** or ANY file format
+- Intelligent parsing extracts course info from any format
+
+### 🧪 **Extensively Tested**
+- **46 automated tests** with **98% pass rate**
+- Performance optimized (1.8s for 3 classes)
+- Security tested (SQL injection, XSS protection)
+- Full test report: [COMPREHENSIVE-TEST-REPORT.md](./COMPREHENSIVE-TEST-REPORT.md)
 
 ## Tech Stack
 
