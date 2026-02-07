@@ -3,8 +3,8 @@ import ICAL from 'ical.js';
 import type { ClassInput } from '../types';
 import { parseScheduleText } from './api';
 
-// Set up PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Set up PDF.js worker using unpkg CDN (more reliable for Vite)
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
 /**
  * Universal file parser that accepts ANY file type (including images) and uses LLM to parse it
