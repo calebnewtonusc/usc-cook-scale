@@ -1,8 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createAnthropic } from '@ai-sdk/anthropic';
-import { generateText } from 'ai';
+import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = createAnthropic({
+const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
@@ -29,17 +28,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log('Parsing image with Claude Vision...');
 
-    // Use Claude Vision to read the image
-    const { text } = await generateText({
-      model: anthropic('claude-sonnet-4-5-20250929'),
-      maxTokens: 2000,
+    // Use Claude Vision API directly
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5-20250929',
+      max_tokens: 2000,
       messages: [
         {
           role: 'user',
           content: [
             {
               type: 'image',
-              image: `data:${mediaType || 'image/png'};base64,${image}`,
+              source: {
+                type: 'base64',
+                media_type: (mediaType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp') || 'image/png',
+                data: image,
+              },
             },
             {
               type: 'text',
@@ -65,8 +68,10 @@ If there are absolutely NO courses in this image, or if the image is unclear/ill
       ]
     });
 
+    const text = message.content[0].type === 'text' ? message.content[0].text.trim() : '[]';
+
     // Extract JSON from response
-    const jsonMatch = text.trim().match(/\[[\s\S]*\]/);
+    const jsonMatch = text.match(/\[[\s\S]*\]/);
     const jsonStr = jsonMatch ? jsonMatch[0] : '[]';
 
     const classes = JSON.parse(jsonStr);
