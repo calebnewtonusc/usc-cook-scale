@@ -20,7 +20,9 @@ export async function parseAnyFile(file: File): Promise<ClassInput[]> {
 
     // Extract text based on file type
     if (file.type === 'application/pdf') {
+      console.log('Extracting text from PDF...');
       textContent = await extractPDFText(file);
+      console.log(`Extracted ${textContent.length} characters from PDF`);
     } else if (file.type === 'text/calendar' || file.name.endsWith('.ics')) {
       textContent = await extractICSText(file);
     } else {
@@ -28,11 +30,20 @@ export async function parseAnyFile(file: File): Promise<ClassInput[]> {
       textContent = await file.text();
     }
 
+    if (!textContent || textContent.trim().length === 0) {
+      throw new Error('No text content found in file');
+    }
+
+    console.log('Sending to Claude AI for parsing...');
     // Use Claude AI to intelligently parse the content
-    return await parseScheduleText(textContent);
+    const classes = await parseScheduleText(textContent);
+    console.log(`Parsed ${classes.length} classes`);
+
+    return classes;
   } catch (error) {
     console.error('Error parsing file:', error);
-    throw new Error('Failed to parse file. Please try text entry instead.');
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Failed to parse file: ${errorMessage}. Please try text entry instead.`);
   }
 }
 
