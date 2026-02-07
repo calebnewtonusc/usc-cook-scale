@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import PDFParser from 'pdf2json';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers - must be set before any return statements
@@ -23,22 +24,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Invalid request: pdfBase64 is required' });
     }
 
-    console.log('Parsing PDF on server...');
-
-    // Dynamically import pdf-parse only when needed
-    const pdf = (await import('pdf-parse')).default;
+    console.log('Parsing PDF on server with pdf2json...');
 
     // Convert base64 to buffer
     const pdfBuffer = Buffer.from(pdfBase64, 'base64');
 
-    // Parse PDF
-    const data = await pdf(pdfBuffer);
+    // Parse PDF using pdf2json (Node.js compatible)
+    const text = await new Promise<string>((resolve, reject) => {
+      const pdfParser = new PDFParser();
 
-    console.log(`Extracted ${data.text.length} characters from PDF`);
+      pdfParser.on('pdfParser_dataError', (errData: { parserError: string }) => {
+        reject(new Error(errData.parserError));
+      });
+
+      pdfParser.on('pdfParser_dataReady', () => {
+        try {
+          // Extract text from all pages
+          const rawText = pdfParser.getRawTextContent();
+          resolve(rawText);
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+      // Parse the buffer
+      pdfParser.parseBuffer(pdfBuffer);
+    });
+
+    console.log(`Extracted ${text.length} characters from PDF`);
 
     return res.status(200).json({
-      text: data.text,
-      pages: data.numpages
+      text: text,
+      pages: 1 // pdf2json doesn't provide page count easily
     });
   } catch (error) {
     console.error('Error parsing PDF:', error);
