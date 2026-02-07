@@ -7,7 +7,6 @@ const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
-// RateMyProfessor API
 const RMP_GRAPHQL_URL = 'https://www.ratemyprofessors.com/graphql';
 const USC_SCHOOL_ID = '1381';
 
@@ -61,7 +60,7 @@ interface ClassAnalysis {
   rmpLink: string;
   redditSearchLink: string;
   courseSearchLink: string;
-  errors: string[]; // NEW: Track what failed
+  errors: string[];
 }
 
 interface OverallAnalysis {
@@ -77,6 +76,46 @@ interface AnalysisResult {
   overall: OverallAnalysis;
   classes: ClassAnalysis[];
   totalUnits: number;
+}
+
+// ============= HELPER: ROBUST LLM CALL =============
+
+async function callLLMRobust<T>(
+  prompt: string,
+  fallback: T,
+  errorMsg: string
+): Promise<{ result: T; error?: string }> {
+  try {
+    const { text } = await generateText({
+      model: anthropic('claude-sonnet-4-5-20250929'),
+      maxTokens: 500,
+      temperature: 0.3,
+      prompt
+    });
+
+    // Extract JSON from response (handle markdown code blocks)
+    let jsonText = text.trim();
+
+    // Remove markdown code blocks if present
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    }
+
+    // Try to find JSON object/array
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+    if (jsonMatch) {
+      jsonText = jsonMatch[0];
+    }
+
+    const result = JSON.parse(jsonText);
+    return { result };
+  } catch (error) {
+    console.error(`[LLM Error] ${errorMsg}:`, error);
+    return {
+      result: fallback,
+      error: `${errorMsg}: ${error instanceof Error ? error.message : 'Unknown error'}`
+    };
+  }
 }
 
 // ============= MAIN HANDLER =============
@@ -101,7 +140,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Invalid request: classes array is required' });
     }
 
-    console.log(`[V3-FIXED] Analyzing ${classes.length} classes...`);
+    console.log(`[V2-LLM] Analyzing ${classes.length} classes with REAL LLM...`);
 
     const classAnalyses: ClassAnalysis[] = await Promise.all(
       classes.map(async (cls: ClassInput) => analyzeClass(cls))
@@ -116,10 +155,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       totalUnits
     };
 
-    console.log(`[V3-FIXED] Analysis complete: ${overallAnalysis.score}/100`);
+    console.log(`[V2-LLM] Analysis complete: ${overallAnalysis.score}/100`);
     return res.status(200).json(result);
   } catch (error) {
-    console.error('[V3-FIXED] Error:', error);
+    console.error('[V2-LLM] Error:', error);
     return res.status(500).json({
       error: 'Failed to analyze schedule',
       details: error instanceof Error ? error.message : String(error)
@@ -130,18 +169,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 // ============= CLASS ANALYSIS =============
 
 async function analyzeClass(cls: ClassInput): Promise<ClassAnalysis> {
-  console.log(`[V3-FIXED] Analyzing ${cls.courseName} with ${cls.professor}`);
+  console.log(`[V2-LLM] Analyzing ${cls.courseName} with ${cls.professor}`);
 
   const errors: string[] = [];
-
-  // FIX: Parse professor name BEFORE searching
   const professorName = parseProfessorName(cls.professor);
-  console.log(`[V3-FIXED] Parsed "${cls.professor}" → "${professorName}"`);
 
-  // Step 1: Find professor
+  // Step 1: Find professor on RMP
   const professorMatch = await findProfessor(professorName, errors);
 
-  // Step 2: Get RMP reviews (only if professor found)
+  // Step 2: Get RMP reviews
   const rmpQuotes = professorMatch
     ? await getRMPReviews(professorMatch.id, cls.courseName, errors)
     : [];
@@ -149,8 +185,8 @@ async function analyzeClass(cls: ClassInput): Promise<ClassAnalysis> {
   // Step 3: Get Reddit quotes
   const redditQuotes = await getRedditQuotes(professorName, cls.courseName, errors);
 
-  // Step 4: Analyze course difficulty (ROBUST)
-  const { difficulty, reasoning, error: diffError } = await analyzeCourseDifficultyRobust(
+  // Step 4: LLM analyze course difficulty
+  const { difficulty, reasoning, error: diffError } = await analyzeCourseDifficultyLLM(
     cls.courseName,
     professorMatch,
     rmpQuotes
@@ -160,24 +196,24 @@ async function analyzeClass(cls: ClassInput): Promise<ClassAnalysis> {
   // Step 5: Calculate final score
   const { finalScore, explanation } = calculateFinalScore(cls, difficulty, professorMatch);
 
-  // Step 6: Generate survival tips (ROBUST)
-  const survivalTips = await generateSurvivalTipsRobust(
+  // Step 6: LLM generate survival tips
+  const { tips: survivalTips, error: tipsError } = await generateSurvivalTipsLLM(
     cls,
     finalScore,
     rmpQuotes,
-    redditQuotes,
-    errors
+    redditQuotes
   );
+  if (tipsError) errors.push(tipsError);
 
-  // Step 7: Generate AI insights
-  const aiInsights = await generateInsightsRobust(
+  // Step 7: LLM generate insights
+  const { insights: aiInsights, error: insightsError } = await generateInsightsLLM(
     cls,
     finalScore,
     rmpQuotes,
     redditQuotes,
-    professorMatch,
-    errors
+    professorMatch
   );
+  if (insightsError) errors.push(insightsError);
 
   const rmpLink = professorMatch
     ? `https://www.ratemyprofessors.com/professor/${professorMatch.id}`
@@ -198,14 +234,13 @@ async function analyzeClass(cls: ClassInput): Promise<ClassAnalysis> {
     rmpLink,
     redditSearchLink: `https://www.reddit.com/r/USC/search/?q=${encodeURIComponent(professorName + ' ' + cls.courseName)}`,
     courseSearchLink: `https://www.google.com/search?q=${encodeURIComponent(`USC ${cls.courseName} ${professorName} review reddit`)}`,
-    errors // NEW: Return errors for transparency
+    errors
   };
 }
 
 // ============= PROFESSOR NAME PARSING =============
 
 function parseProfessorName(input: string): string {
-  // Handle "Last, First" format
   if (input.includes(',')) {
     const [last, first] = input.split(',').map(s => s.trim());
     return `${first} ${last}`;
@@ -217,8 +252,6 @@ function parseProfessorName(input: string): string {
 
 async function findProfessor(professorName: string, errors: string[]): Promise<ProfessorMatch | null> {
   try {
-    console.log(`[V3-FIXED] Searching RMP for: ${professorName}`);
-
     const query = {
       query: `query NewSearchTeachersQuery($text: String!, $schoolID: ID!) {
         newSearch {
@@ -254,34 +287,27 @@ async function findProfessor(professorName: string, errors: string[]): Promise<P
     const teachers = response.data?.data?.newSearch?.teachers?.edges;
 
     if (!teachers || teachers.length === 0) {
-      console.log(`[V3-FIXED] No professors found for: ${professorName}`);
       errors.push(`Professor "${professorName}" not found on RateMyProfessors`);
       return null;
     }
 
-    // Take BEST match (most reviews)
-    const sortedTeachers = teachers.sort((a: any, b: any) =>
+    const sorted = teachers.sort((a: any, b: any) =>
       (b.node.numRatings || 0) - (a.node.numRatings || 0)
     );
 
-    const bestMatch = sortedTeachers[0].node;
-    const matchName = `${bestMatch.firstName} ${bestMatch.lastName}`;
-
-    console.log(`[V3-FIXED] Found professor: ${matchName} (${bestMatch.numRatings} ratings)`);
+    const best = sorted[0].node;
 
     return {
-      id: bestMatch.id,
-      name: matchName,
-      avgRating: bestMatch.avgRating || 0,
-      avgDifficulty: bestMatch.avgDifficulty || 0,
-      wouldTakeAgainPercent: bestMatch.wouldTakeAgainPercent || 0,
-      numRatings: bestMatch.numRatings || 0,
-      confidence: bestMatch.numRatings > 10 ? 0.9 : 0.7,
-      reasoning: `Matched by name with ${bestMatch.numRatings} reviews`
+      id: best.id,
+      name: `${best.firstName} ${best.lastName}`,
+      avgRating: best.avgRating || 0,
+      avgDifficulty: best.avgDifficulty || 0,
+      wouldTakeAgainPercent: best.wouldTakeAgainPercent || 0,
+      numRatings: best.numRatings || 0,
+      confidence: best.numRatings > 10 ? 0.9 : 0.7,
+      reasoning: `Matched by name with ${best.numRatings} reviews`
     };
-
   } catch (error) {
-    console.error('[V3-FIXED] RMP search error:', error);
     errors.push(`RMP API error: ${error instanceof Error ? error.message : 'Unknown'}`);
     return null;
   }
@@ -291,8 +317,6 @@ async function findProfessor(professorName: string, errors: string[]): Promise<P
 
 async function getRMPReviews(professorId: string, courseName: string, errors: string[]): Promise<RMPReview[]> {
   try {
-    console.log(`[V3-FIXED] Fetching reviews for ID: ${professorId}`);
-
     const query = {
       query: `query RatingsQuery($id: ID!) {
         node(id: $id) {
@@ -331,7 +355,7 @@ async function getRMPReviews(professorId: string, courseName: string, errors: st
       return [];
     }
 
-    const reviews: RMPReview[] = ratings
+    return ratings
       .map((edge: any) => {
         const node = edge.node;
         return {
@@ -345,12 +369,7 @@ async function getRMPReviews(professorId: string, courseName: string, errors: st
       })
       .filter((r: RMPReview) => r.comment && r.comment.length > 30)
       .slice(0, 5);
-
-    console.log(`[V3-FIXED] Found ${reviews.length} quality reviews`);
-    return reviews;
-
   } catch (error) {
-    console.error('[V3-FIXED] RMP reviews error:', error);
     errors.push(`Failed to fetch reviews: ${error instanceof Error ? error.message : 'Unknown'}`);
     return [];
   }
@@ -375,7 +394,7 @@ async function getRedditQuotes(professor: string, courseName: string, errors: st
       return [];
     }
 
-    const quotes: RedditQuote[] = posts
+    return posts
       .filter((post: any) => post.data && (post.data.selftext || post.data.title))
       .slice(0, 3)
       .map((post: any) => {
@@ -390,26 +409,21 @@ async function getRedditQuotes(professor: string, courseName: string, errors: st
           author: data.author || 'unknown'
         };
       });
-
-    console.log(`[V3-FIXED] Found ${quotes.length} Reddit mentions`);
-    return quotes;
-
   } catch (error) {
-    console.error('[V3-FIXED] Reddit error:', error);
     errors.push('Reddit search failed');
     return [];
   }
 }
 
-// ============= ROBUST COURSE DIFFICULTY =============
+// ============= LLM COURSE DIFFICULTY =============
 
-async function analyzeCourseDifficultyRobust(
+async function analyzeCourseDifficultyLLM(
   courseName: string,
   professorMatch: ProfessorMatch | null,
   rmpReviews: RMPReview[]
 ): Promise<{ difficulty: number; reasoning: string; error?: string }> {
-  // USC-specific known difficulties
-  const usc Known = {
+  // USC-specific overrides (known courses)
+  const uscKnown: Record<string, number> = {
     'CSCI-104': 85, 'CSCI-170': 70, 'CSCI-103': 60,
     'MATH-226': 75, 'MATH-225': 70, 'MATH-125': 50,
     'WRIT-150': 55, 'WRIT-340': 60
@@ -422,15 +436,36 @@ async function analyzeCourseDifficultyRobust(
     };
   }
 
-  // Regex fallback (TEMPORARY until LLM is fixed)
-  const isStem = /CSCI|MATH|PHYS|CHEM|EE|ENGR/i.test(courseName);
-  const baseScore = isStem ? 65 : 40;
+  // LLM analysis
+  const reviewContext = rmpReviews.length > 0
+    ? `Student reviews: ${rmpReviews.slice(0, 2).map(r => `"${r.comment.substring(0, 100)}..."`).join('; ')}`
+    : 'No reviews available';
 
-  return {
-    difficulty: baseScore,
-    reasoning: `${isStem ? 'STEM' : 'Humanities'} course (${baseScore}/100)`,
-    error: 'Using simplified classification - LLM analysis temporarily disabled'
-  };
+  const prompt = `Analyze this USC course difficulty (0-100):
+
+Course: ${courseName}
+Professor RMP Difficulty: ${professorMatch?.avgDifficulty || 'Unknown'}/5
+${reviewContext}
+
+Consider:
+- Course level (100=intro, 400=advanced)
+- Subject difficulty (data structures vs intro programming)
+- USC-specific reputation
+- Typical workload
+
+Return ONLY valid JSON:
+{"difficulty": 0-100, "reasoning": "brief explanation"}`;
+
+  const { result, error } = await callLLMRobust<{difficulty: number; reasoning: string}>(
+    prompt,
+    {
+      difficulty: /CSCI|MATH|PHYS|CHEM|EE|ENGR/i.test(courseName) ? 65 : 40,
+      reasoning: 'LLM analysis failed - using STEM/Humanities fallback'
+    },
+    'Course difficulty analysis failed'
+  );
+
+  return { ...result, error };
 }
 
 // ============= SCORE CALCULATION =============
@@ -444,20 +479,14 @@ function calculateFinalScore(
   let explanation = `Base: ${score}`;
 
   if (professorMatch && professorMatch.numRatings > 5) {
-    const { avgRating, avgDifficulty } = professorMatch;
-
-    // Simple multiplier based on professor difficulty
-    const multiplier = 0.7 + (avgDifficulty / 5) * 0.6; // Range: 0.7 to 1.3
-    score = score * multiplier;
-    explanation += ` × ${multiplier.toFixed(2)} (Prof: ${avgRating.toFixed(1)}/5, Difficulty: ${avgDifficulty.toFixed(1)}/5)`;
+    const multiplier = 0.7 + (professorMatch.avgDifficulty / 5) * 0.6;
+    score *= multiplier;
+    explanation += ` × ${multiplier.toFixed(2)} (Prof: ${professorMatch.avgRating.toFixed(1)}/5, Diff: ${professorMatch.avgDifficulty.toFixed(1)}/5)`;
   }
 
-  // Unit adjustment
-  const unitMultiplier = cls.units / 4;
-  score = score * unitMultiplier;
-  if (unitMultiplier !== 1) {
-    explanation += ` × ${unitMultiplier} units`;
-  }
+  const unitMult = cls.units / 4;
+  score *= unitMult;
+  if (unitMult !== 1) explanation += ` × ${unitMult} units`;
 
   return {
     finalScore: Math.round(Math.max(10, Math.min(100, score))),
@@ -465,81 +494,121 @@ function calculateFinalScore(
   };
 }
 
-// ============= ROBUST SURVIVAL TIPS =============
+// ============= LLM SURVIVAL TIPS =============
 
-async function generateSurvivalTipsRobust(
+async function generateSurvivalTipsLLM(
   cls: ClassInput,
   score: number,
   rmpReviews: RMPReview[],
-  redditQuotes: RedditQuote[],
-  errors: string[]
-): Promise<string[]> {
-  // Smart fallback based on actual data
-  const tips: string[] = [];
+  redditQuotes: RedditQuote[]
+): Promise<{ tips: string[]; error?: string }> {
+  const rmpContext = rmpReviews.length > 0
+    ? rmpReviews.slice(0, 2).map(r => `"${r.comment.substring(0, 100)}"`).join('; ')
+    : 'No reviews';
 
-  if (score > 70) {
-    tips.push('This is a challenging class - budget 15+ hours per week');
-    tips.push('Start assignments early, they take longer than expected');
-    tips.push('Form study groups with classmates');
-  } else if (score > 50) {
-    tips.push('Moderate difficulty - stay consistent with coursework');
-    tips.push('Attend office hours when you need help');
-  } else {
-    tips.push('Manageable workload - maintain steady effort');
-    tips.push('Good opportunity to focus on harder classes');
-  }
+  const redditContext = redditQuotes.length > 0
+    ? redditQuotes.map(q => `"${q.text.substring(0, 80)}"`).join('; ')
+    : 'No Reddit discussions';
 
-  if (rmpReviews.length > 0) {
-    const avgDiff = rmpReviews.reduce((sum, r) => sum + r.difficulty, 0) / rmpReviews.length;
-    if (avgDiff > 4) {
-      tips.push('⚠️ Students rate this professor as very difficult - prepare accordingly');
-    }
-  }
+  const prompt = `Generate 4 specific survival tips for this USC class:
 
-  return tips;
+Class: ${cls.courseName} with Prof. ${cls.professor}
+Difficulty: ${score}/100
+RMP Reviews: ${rmpContext}
+Reddit: ${redditContext}
+
+Tips must:
+- Be specific to THIS class/professor
+- Reference actual student feedback when available
+- Include time management strategies
+- Be actionable
+
+Return ONLY valid JSON array:
+["tip1", "tip2", "tip3", "tip4"]`;
+
+  const fallback = score > 70
+    ? [
+        'This is a challenging class - budget 15+ hours per week',
+        'Start assignments early, they take longer than expected',
+        'Form study groups with classmates',
+        'Attend office hours regularly'
+      ]
+    : [
+        'Maintain consistent effort throughout the semester',
+        'Review concepts regularly to stay on track',
+        'Use this as an opportunity to balance harder classes',
+        'Attend lectures and complete assignments on time'
+      ];
+
+  const { result, error } = await callLLMRobust<string[]>(
+    prompt,
+    fallback,
+    'Survival tips generation failed'
+  );
+
+  return { tips: result, error };
 }
 
-// ============= ROBUST INSIGHTS =============
+// ============= LLM INSIGHTS =============
 
-async function generateInsightsRobust(
+async function generateInsightsLLM(
   cls: ClassInput,
   score: number,
   rmpReviews: RMPReview[],
   redditQuotes: RedditQuote[],
-  professorMatch: ProfessorMatch | null,
-  errors: string[]
-): Promise<string> {
-  let insight = `${cls.courseName} with Prof. ${cls.professor} has a difficulty score of ${score}/100. `;
+  professorMatch: ProfessorMatch | null
+): Promise<{ insights: string; error?: string }> {
+  const rmpSummary = professorMatch
+    ? `${professorMatch.numRatings} RMP reviews, ${professorMatch.avgRating.toFixed(1)}/5 rating`
+    : 'No RMP data';
 
-  if (professorMatch && professorMatch.numRatings > 0) {
-    insight += `Prof. ${professorMatch.name} has ${professorMatch.numRatings} reviews with an average rating of ${professorMatch.avgRating.toFixed(1)}/5. `;
-  } else {
-    insight += `No RateMyProfessors data available for this professor yet. `;
+  const reviewsSummary = rmpReviews.length > 0
+    ? `Reviews mention: ${rmpReviews[0].comment.substring(0, 100)}...`
+    : 'No reviews available';
+
+  const prompt = `Summarize this USC class in 2-3 sentences:
+
+Class: ${cls.courseName} with Prof. ${cls.professor}
+Difficulty: ${score}/100
+${rmpSummary}
+${reviewsSummary}
+
+Be honest, student-friendly, and mention data sources.
+Return plain text (no markdown, no JSON).`;
+
+  try {
+    const { text } = await generateText({
+      model: anthropic('claude-sonnet-4-5-20250929'),
+      maxTokens: 300,
+      temperature: 0.5,
+      prompt
+    });
+
+    return { insights: text.trim() };
+  } catch (error) {
+    const fallback = `${cls.courseName} with Prof. ${cls.professor} has a difficulty score of ${score}/100. ${
+      professorMatch
+        ? `Prof. ${professorMatch.name} has ${professorMatch.numRatings} reviews with a ${professorMatch.avgRating.toFixed(1)}/5 rating.`
+        : 'No RateMyProfessors data available yet.'
+    }`;
+
+    return {
+      insights: fallback,
+      error: 'Insights generation failed'
+    };
   }
-
-  if (rmpReviews.length > 0) {
-    insight += `Based on ${rmpReviews.length} student reviews, this class has moderate expectations. `;
-  }
-
-  if (redditQuotes.length > 0) {
-    insight += `Found ${redditQuotes.length} Reddit discussions about this class/professor. `;
-  }
-
-  return insight;
 }
 
 // ============= OVERALL SCORE =============
 
 async function calculateOverallScore(classes: ClassAnalysis[]): Promise<OverallAnalysis> {
   const avgScore = Math.round(classes.reduce((sum, c) => sum + c.finalScore, 0) / classes.length);
-
-  // Smart adjustments
   const stemCount = classes.filter(c => /CSCI|MATH|PHYS|CHEM|EE|ENGR/i.test(c.courseName)).length;
   const highDiffCount = classes.filter(c => c.finalScore > 70).length;
 
   let finalScore = avgScore;
-  let insights: string[] = [];
-  let warnings: string[] = [];
+  const insights: string[] = [];
+  const warnings: string[] = [];
 
   if (stemCount >= 3) {
     finalScore += 10;
@@ -551,7 +620,7 @@ async function calculateOverallScore(classes: ClassAnalysis[]): Promise<OverallA
   }
 
   if (finalScore < 40) {
-    insights.push('Light semester - good for taking on internships or extracurriculars');
+    insights.push('Light semester - good for internships/extracurriculars');
   } else if (finalScore > 75) {
     insights.push('Very demanding schedule - prioritize time management');
   }
@@ -559,7 +628,7 @@ async function calculateOverallScore(classes: ClassAnalysis[]): Promise<OverallA
   return {
     score: Math.min(100, finalScore),
     verbalLabel: getVerbalLabel(finalScore),
-    reasoning: `Average class difficulty (${avgScore}) adjusted for workload factors`,
+    reasoning: `Average difficulty (${avgScore}) adjusted for workload synergy`,
     insights,
     warnings,
     strengths: finalScore < 50 ? ['Balanced workload'] : []
