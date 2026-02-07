@@ -12,11 +12,13 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
       {classes.map((cls, index) => (
         <div key={index} className="card border-l-4 border-cook-red">
           <div className="flex justify-between items-start mb-2">
-            <div>
+            <div className="flex-1">
               <h4 className="text-lg font-bold text-gray-900">
                 {cls.type === 'STEM' ? '⚙️' : '📚'} {cls.courseName}
               </h4>
-              <p className="text-gray-600">Prof. {cls.professor}</p>
+              <p className="text-gray-600">
+                {cls.professor ? `Prof. ${cls.professor}` : 'Professor not specified'}
+              </p>
               <p className="text-sm text-gray-500">{cls.units} units</p>
             </div>
             <div className="text-right">
@@ -27,9 +29,12 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
             </div>
           </div>
 
-          {cls.professorRating && (
+          {/* Professor Ratings - if available */}
+          {cls.professorRating && cls.professorRating.numRatings > 0 ? (
             <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-              <p className="text-sm font-medium text-gray-700 mb-1">Professor Ratings:</p>
+              <p className="text-sm font-medium text-gray-700 mb-1">
+                📊 Professor Ratings (from RateMyProfessors):
+              </p>
               <div className="grid grid-cols-3 gap-2 text-xs">
                 <div>
                   <span className="text-gray-600">Quality:</span>
@@ -50,12 +55,25 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
                   </span>
                 </div>
               </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Based on {cls.professorRating.numRatings} student reviews
+              </p>
+            </div>
+          ) : (
+            <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-800">
+                ℹ️ Professor ratings not found on RateMyProfessors
+              </p>
+              <p className="text-xs text-blue-600 mt-1">
+                Score based on course type ({cls.type}) and units only
+              </p>
             </div>
           )}
 
-          <div className="mt-3 text-xs text-gray-600 bg-yellow-50 p-2 rounded">
-            <p className="font-medium mb-1">Score Calculation:</p>
-            <p>{cls.explanation}</p>
+          {/* Score Explanation */}
+          <div className="mt-3 text-xs text-gray-600 bg-yellow-50 p-3 rounded border border-yellow-200">
+            <p className="font-medium mb-1">🧮 Score Calculation:</p>
+            <p className="leading-relaxed">{cls.explanation}</p>
           </div>
         </div>
       ))}

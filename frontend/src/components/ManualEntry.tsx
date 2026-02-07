@@ -1,106 +1,117 @@
 import { useState } from 'react';
 import type { ClassInput } from '../types';
+import { parseScheduleText } from '../services/api';
 
 interface ManualEntryProps {
   onSubmit: (classes: ClassInput[]) => void;
 }
 
 export default function ManualEntry({ onSubmit }: ManualEntryProps) {
-  const [classes, setClasses] = useState<ClassInput[]>([
-    { courseName: '', professor: '', units: 4 }
-  ]);
+  const [scheduleText, setScheduleText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const addClass = () => {
-    setClasses([...classes, { courseName: '', professor: '', units: 4 }]);
-  };
-
-  const removeClass = (index: number) => {
-    setClasses(classes.filter((_, i) => i !== index));
-  };
-
-  const updateClass = (index: number, field: keyof ClassInput, value: string | number) => {
-    const newClasses = [...classes];
-    newClasses[index] = { ...newClasses[index], [field]: value };
-    setClasses(newClasses);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const validClasses = classes.filter(c => c.courseName && c.professor);
-    if (validClasses.length === 0) {
-      alert('Please add at least one class');
+
+    if (!scheduleText.trim()) {
+      setError('Please enter your schedule');
       return;
     }
-    onSubmit(validClasses);
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Use Claude AI to parse the schedule text
+      const parsedClasses = await parseScheduleText(scheduleText);
+
+      if (parsedClasses.length === 0) {
+        setError('Could not find any classes in your text. Please make sure to include course names and professor names.');
+        setLoading(false);
+        return;
+      }
+
+      onSubmit(parsedClasses);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to parse schedule. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const exampleText = `CSCI 104 - Data Structures - Mark Redekopp - 4 units
+MATH 225 - Linear Algebra - Smith - 4 units
+WRIT 150 - Writing - Johnson - 4 units`;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {classes.map((cls, index) => (
-        <div key={index} className="card space-y-3">
-          <div className="flex justify-between items-center">
-            <h3 className="font-bold text-lg">Class {index + 1}</h3>
-            {classes.length > 1 && (
-              <button
-                type="button"
-                onClick={() => removeClass(index)}
-                className="text-red-600 hover:text-red-800"
-              >
-                Remove
-              </button>
-            )}
-          </div>
+      {/* Instructions */}
+      <div className="bg-yellow-50 border-l-4 border-cook-yellow p-4 rounded">
+        <h3 className="font-bold text-gray-900 mb-2">📝 What to include:</h3>
+        <ul className="text-sm text-gray-700 space-y-1">
+          <li>• <strong>Course names</strong> (e.g., CSCI 104, Math 225)</li>
+          <li>• <strong>Professor names</strong> (e.g., Mark Redekopp)</li>
+          <li>• <strong>Units</strong> (optional - we'll estimate if missing)</li>
+        </ul>
+        <p className="text-xs text-gray-600 mt-3">
+          Just paste your schedule or type it naturally - our AI will figure it out! 🔥
+        </p>
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Course Name</label>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="e.g., CSCI 104"
-              value={cls.courseName}
-              onChange={(e) => updateClass(index, 'courseName', e.target.value)}
-              required
-            />
-          </div>
+      {/* Text Area */}
+      <div>
+        <label className="block text-sm font-medium mb-2 text-gray-700">
+          Paste or type your schedule:
+        </label>
+        <textarea
+          className="input-field min-h-[200px] font-mono text-sm"
+          placeholder={exampleText}
+          value={scheduleText}
+          onChange={(e) => setScheduleText(e.target.value)}
+          disabled={loading}
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          Any format works! Copy from WeReg, your email, or just type it out.
+        </p>
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Professor Name</label>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="e.g., John Smith"
-              value={cls.professor}
-              onChange={(e) => updateClass(index, 'professor', e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Units</label>
-            <input
-              type="number"
-              className="input-field"
-              min="1"
-              max="8"
-              value={cls.units}
-              onChange={(e) => updateClass(index, 'units', parseInt(e.target.value) || 4)}
-              required
-            />
-          </div>
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded">
+          {error}
         </div>
-      ))}
+      )}
 
+      {/* Submit Button */}
       <button
-        type="button"
-        onClick={addClass}
-        className="btn-secondary w-full"
+        type="submit"
+        className="btn-primary w-full"
+        disabled={loading}
       >
-        + Add Another Class
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="animate-spin">🔥</span>
+            AI is reading your schedule...
+          </span>
+        ) : (
+          'Calculate Cook Scale'
+        )}
       </button>
 
-      <button type="submit" className="btn-primary w-full">
-        Calculate Cook Scale
-      </button>
+      {/* Example */}
+      <details className="text-sm text-gray-600">
+        <summary className="cursor-pointer font-medium hover:text-gray-900">
+          See example format
+        </summary>
+        <pre className="mt-2 p-3 bg-gray-50 rounded border text-xs overflow-x-auto">
+{exampleText}
+
+Or just paste from WeReg:
+Monday 10:00-11:50 CSCI 104 Lec Prof: Mark Redekopp
+Tuesday 2:00-3:20 MATH 225 Lec Prof: John Smith
+        </pre>
+      </details>
     </form>
   );
 }
