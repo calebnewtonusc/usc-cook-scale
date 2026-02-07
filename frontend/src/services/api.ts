@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ClassInput, AnalysisResult } from '../types';
+import type { ClassInput, AnalysisResult, AnalysisResultV2 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -15,6 +15,29 @@ export async function analyzeSchedule(classes: ClassInput[]): Promise<AnalysisRe
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.error || error.message;
+      throw new Error(`Failed to analyze schedule: ${message}`);
+    }
+    throw error;
+  }
+}
+
+export async function analyzeScheduleV2(classes: ClassInput[]): Promise<AnalysisResultV2> {
+  try {
+    console.log('[V2] Calling enhanced analysis endpoint...');
+    const response = await axios.post(`${API_URL}/api/analyze-schedule-v2`, { classes }, {
+      timeout: 60000 // 60 second timeout for LLM processing
+    });
+
+    if (!response.data) {
+      throw new Error('No data received from server');
+    }
+
+    console.log('[V2] Analysis complete:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('[V2] Analysis error:', error);
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.error || error.response?.data?.details || error.message;
       throw new Error(`Failed to analyze schedule: ${message}`);
     }
     throw error;

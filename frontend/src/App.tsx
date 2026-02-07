@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import LandingPage from './components/LandingPage';
 import UploadSchedule from './components/UploadSchedule';
-import CookScoreDisplay from './components/CookScoreDisplay';
-import type { ClassInput, AnalysisResult } from './types';
-import { analyzeSchedule } from './services/api';
+import CookScoreDisplayV2 from './components/CookScoreDisplayV2';
+import type { ClassInput, AnalysisResultV2 } from './types';
+import { analyzeScheduleV2 } from './services/api';
 
 function App() {
   const [showLanding, setShowLanding] = useState(true);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [result, setResult] = useState<AnalysisResultV2 | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +20,7 @@ function App() {
     setError(null);
 
     try {
-      const analysisResult = await analyzeSchedule(classes);
+      const analysisResult = await analyzeScheduleV2(classes);
       setResult(analysisResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze schedule');
@@ -73,13 +73,17 @@ function App() {
           <div className="card text-center py-12">
             <div className="animate-bounce text-6xl mb-4">🔥</div>
             <p className="text-xl font-medium text-cook-red">
-              Researching Your Schedule...
+              Analyzing Your Schedule with AI...
             </p>
             <p className="text-gray-600 mt-2">
-              Scanning RateMyProfessors, Reddit, and aggregating data...
+              • Verifying professors on RateMyProfessors<br />
+              • Extracting real student reviews and quotes<br />
+              • Searching Reddit discussions<br />
+              • Calculating intelligent difficulty scores<br />
+              • Generating personalized survival tips
             </p>
             <p className="text-sm text-gray-500 mt-4">
-              This takes a few seconds
+              This may take 15-30 seconds (we're doing a LOT of research!)
             </p>
           </div>
         )}
