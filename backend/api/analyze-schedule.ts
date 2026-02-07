@@ -30,6 +30,9 @@ interface ClassResult extends ClassInput {
   professorRating: ProfessorRating | null;
   score: number;
   explanation: string;
+  rmpLink: string;
+  redditSearchLink: string;
+  courseSearchLink: string;
 }
 
 interface AnalysisResult {
@@ -85,14 +88,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ]);
 
         // Calculate score
-        const { score, explanation } = calculateClassScore(cls, classType, professorRating);
+        const { score, explanation} = calculateClassScore(cls, classType, professorRating);
+
+        // Generate research links
+        const rmpLink = `https://www.ratemyprofessors.com/search/professors/1381?q=${encodeURIComponent(cls.professor)}`;
+        const redditSearchLink = `https://www.reddit.com/r/USC/search/?q=${encodeURIComponent(cls.professor + ' ' + cls.courseName)}`;
+        const courseSearchLink = `https://www.google.com/search?q=${encodeURIComponent(`USC ${cls.courseName} ${cls.professor} review reddit`)}`;
 
         return {
           ...cls,
           type: classType,
           professorRating,
           score,
-          explanation
+          explanation,
+          rmpLink,
+          redditSearchLink,
+          courseSearchLink
         };
       })
     );

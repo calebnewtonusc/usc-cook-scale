@@ -1,13 +1,19 @@
 import { useState } from 'react';
+import LandingPage from './components/LandingPage';
 import UploadSchedule from './components/UploadSchedule';
 import CookScoreDisplay from './components/CookScoreDisplay';
 import type { ClassInput, AnalysisResult } from './types';
 import { analyzeSchedule } from './services/api';
 
 function App() {
+  const [showLanding, setShowLanding] = useState(true);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleStart = () => {
+    setShowLanding(false);
+  };
 
   const handleAnalyze = async (classes: ClassInput[]) => {
     setLoading(true);
@@ -26,20 +32,39 @@ function App() {
   const handleReset = () => {
     setResult(null);
     setError(null);
+    setShowLanding(false);
   };
 
+  const handleBackToHome = () => {
+    setResult(null);
+    setError(null);
+    setShowLanding(true);
+  };
+
+  // Show landing page
+  if (showLanding) {
+    return <LandingPage onStart={handleStart} />;
+  }
+
+  // Show main app
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <header className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-black mb-4">
+        <header className="text-center mb-8">
+          <button
+            onClick={handleBackToHome}
+            className="text-gray-600 hover:text-cook-red transition-colors mb-4 text-sm"
+          >
+            ← Back to Home
+          </button>
+          <h1 className="text-4xl md:text-5xl font-black mb-2">
             <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">
               USC Cook Scale
             </span>
           </h1>
-          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-            Find out how "cooked" your semester schedule really is
+          <p className="text-lg text-gray-700">
+            How cooked is your schedule?
           </p>
         </header>
 
@@ -48,10 +73,13 @@ function App() {
           <div className="card text-center py-12">
             <div className="animate-bounce text-6xl mb-4">🔥</div>
             <p className="text-xl font-medium text-cook-red">
-              Analyzing your schedule...
+              Researching Your Schedule...
             </p>
             <p className="text-gray-600 mt-2">
-              Checking professor ratings and calculating your Cook Scale score
+              Scanning RateMyProfessors, Reddit, and aggregating data...
+            </p>
+            <p className="text-sm text-gray-500 mt-4">
+              This takes a few seconds
             </p>
           </div>
         )}
@@ -86,7 +114,7 @@ function App() {
         {/* Footer */}
         <footer className="mt-12 text-center text-sm text-gray-600">
           <p>
-            Powered by Claude AI • Data from RateMyProfessors
+            Powered by Claude AI • Data from RateMyProfessors, Reddit & More
           </p>
           <p className="mt-1">
             Made for USC students 🎓

@@ -20,6 +20,9 @@ export interface ClassScore {
   professorRating: ProfessorRating | null;
   score: number;
   explanation: string;
+  rmpLink?: string;
+  redditSearchLink?: string;
+  courseSearchLink?: string;
 }
 
 export interface AnalysisResult {
