@@ -1,8 +1,8 @@
-# 🔥 USC Cook Scale 🔥
+# 🔥 USC Cooked Scale 🔥
 
 **Find out how "cooked" your USC semester schedule really is!**
 
-AI-powered class difficulty analyzer that combines RateMyProfessors data with intelligent course classification to give you a "Cook Scale" score from 0-100.
+AI-powered class difficulty analyzer that combines RateMyProfessors data with intelligent course classification to give you a "Cooked Scale" score from 0-100.
 
 ## 🚀 Live App
 
@@ -18,7 +18,7 @@ AI-powered class difficulty analyzer that combines RateMyProfessors data with in
 1. Go to WebReg → Print/Save your schedule as PDF
 2. Visit [usc-cook-scale.vercel.app](https://usc-cook-scale.vercel.app/)
 3. Upload your WebReg PDF
-4. Get instant Cook Scale analysis! 🔥
+4. Get instant Cooked Scale analysis! 🔥
 
 **Or manually:** Paste your schedule text OR upload any file (PDF/image/calendar)
 
@@ -221,7 +221,7 @@ vercel
    - Base difficulty (STEM = 60pts, Humanities = 30pts)
    - Professor multiplier (based on quality, difficulty, would-take-again)
    - Unit multiplier (normalized to 4-unit standard)
-6. **Display**: Show overall Cook Scale score (0-100) with breakdown
+6. **Display**: Show overall Cooked Scale score (0-100) with breakdown
 
 ## Scoring Algorithm
 
@@ -247,7 +247,7 @@ Overall Score:
 - Normalized to 0-100 scale
 ```
 
-## Cook Scale Legend
+## Cooked Scale Legend
 
 - **0-20**: Raw 🥩 (Easy schedule)
 - **21-35**: Lightly Toasted 🍞 (Manageable)
@@ -259,7 +259,7 @@ Overall Score:
 ## API Endpoints
 
 ### `POST /api/analyze-schedule`
-Analyzes a schedule and returns Cook Scale score.
+Analyzes a schedule and returns Cooked Scale score.
 
 **Request Body:**
 ```json

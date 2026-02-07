@@ -61,12 +61,12 @@ function App() {
           <div className="flex items-center justify-center gap-4 mb-2">
             <img
               src="/logo.png"
-              alt="USC Cook Scale Logo"
+              alt="USC Cooked Scale Logo"
               className="w-12 h-12 md:w-16 md:h-16"
             />
             <h1 className="text-4xl md:text-5xl font-black">
               <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">
-                USC Cook Scale
+                USC Cooked Scale
               </span>
             </h1>
           </div>
@@ -123,13 +123,41 @@ function App() {
         )}
 
         {/* Footer */}
-        <footer className="mt-12 text-center text-sm text-gray-600">
-          <p>
-            Powered by Claude AI • Data from RateMyProfessors, Reddit & More
-          </p>
-          <p className="mt-1">
-            Made for USC students 🎓
-          </p>
+        <footer className="mt-12 text-center">
+          <div className="flex flex-col items-center gap-6 mb-6">
+            <a
+              href="https://calebnewton.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 px-8 py-6 bg-white/80 backdrop-blur-sm rounded-full border-2 border-cook-red/30 shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-cook-red/60 transition-all duration-300 no-underline"
+            >
+              <img
+                src="/caleb-usc.jpg"
+                alt="Caleb Newton at USC"
+                className="w-12 h-12 rounded-full object-cover shadow-lg"
+                style={{
+                  objectPosition: 'center 30%',
+                  border: '2px solid #DC2626'
+                }}
+              />
+              <div className="flex flex-col items-start gap-1">
+                <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                  Built by
+                </span>
+                <span className="text-base text-gray-900 font-bold">
+                  Caleb Newton
+                </span>
+              </div>
+            </a>
+          </div>
+          <div className="text-sm text-gray-600">
+            <p>
+              Powered by Claude AI • Data from RateMyProfessors, Reddit & More
+            </p>
+            <p className="mt-1">
+              Made for USC students 🎓
+            </p>
+          </div>
         </footer>
       </div>
     </div>

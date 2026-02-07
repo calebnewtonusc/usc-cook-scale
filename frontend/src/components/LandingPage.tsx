@@ -7,13 +7,13 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
           <div className="inline-block mb-6">
             <img
               src="/logo.png"
-              alt="USC Cook Scale Logo"
+              alt="USC Cooked Scale Logo"
               className="w-32 h-32 md:w-48 md:h-48 mx-auto animate-pulse"
             />
           </div>
           <h1 className="text-6xl md:text-8xl font-black mb-6">
             <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">
-              USC Cook Scale
+              USC Cooked Scale
             </span>
           </h1>
           <p className="text-2xl md:text-3xl text-gray-700 font-bold mb-4">
@@ -227,9 +227,9 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
           </div>
         </div>
 
-        {/* Cook Scale Legend */}
+        {/* Cooked Scale Legend */}
         <div className="card bg-gradient-to-r from-blue-50 to-red-50 mb-16">
-          <h2 className="text-3xl font-bold text-center mb-6">The Cook Scale</h2>
+          <h2 className="text-3xl font-bold text-center mb-6">The Cooked Scale</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-blue-100 p-4 rounded-lg border-2 border-blue-300">
               <div className="text-3xl mb-2">🥩</div>
@@ -265,7 +265,7 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
         </div>
 
         {/* CTA */}
-        <div className="text-center">
+        <div className="text-center mb-12">
           <button
             onClick={onStart}
             className="btn-primary text-2xl px-16 py-6 shadow-2xl hover:shadow-cook-red/50 transform hover:scale-105 transition-all"
@@ -274,6 +274,37 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
           </button>
           <p className="text-gray-600 mt-4">
             Join hundreds of USC students making smarter schedule decisions
+          </p>
+        </div>
+
+        {/* Built By Footer */}
+        <div className="flex flex-col items-center gap-6 pt-8 border-t border-gray-200">
+          <a
+            href="https://calebnewton.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-4 px-8 py-6 bg-white/80 backdrop-blur-sm rounded-full border-2 border-cook-red/30 shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-cook-red/60 transition-all duration-300 no-underline"
+          >
+            <img
+              src="/caleb-usc.jpg"
+              alt="Caleb Newton at USC"
+              className="w-12 h-12 rounded-full object-cover shadow-lg"
+              style={{
+                objectPosition: 'center 30%',
+                border: '2px solid #DC2626'
+              }}
+            />
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                Built by
+              </span>
+              <span className="text-base text-gray-900 font-bold">
+                Caleb Newton
+              </span>
+            </div>
+          </a>
+          <p className="text-sm text-gray-600">
+            Made for USC students 🎓
           </p>
         </div>
       </div>

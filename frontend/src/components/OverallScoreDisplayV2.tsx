@@ -14,7 +14,7 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
       {/* Main Score Card */}
       <div className="card bg-gradient-to-br from-cook-red via-red-600 to-orange-600 text-white shadow-2xl">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold mb-2">🔥 Your Cook Scale Score 🔥</h2>
+          <h2 className="text-3xl font-bold mb-2">🔥 Your Cooked Scale Score 🔥</h2>
           <p className="text-red-100 text-sm">AI-Powered Semester Difficulty Analysis</p>
         </div>
 

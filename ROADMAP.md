@@ -1,4 +1,4 @@
-# 🚀 USC Cook Scale - Product Roadmap
+# 🚀 USC Cooked Scale - Product Roadmap
 
 **Last Updated:** February 7, 2026
 **Current Version:** V2 (Enhanced AI Analysis)
@@ -139,7 +139,7 @@
 
 #### 8. **Community Features**
 **Actions:**
-- [ ] Upvote/downvote accuracy of Cook Scale scores
+- [ ] Upvote/downvote accuracy of Cooked Scale scores
 - [ ] User-submitted tips and reviews
 - [ ] "Students who took this schedule also took..." suggestions
 - [ ] Anonymous feedback on professor/course difficulty
@@ -185,7 +185,7 @@
 #### 12. **Browser Extension**
 **Actions:**
 - [ ] Chrome/Firefox extension
-- [ ] Inject Cook Scale scores directly into WebReg
+- [ ] Inject Cooked Scale scores directly into WebReg
 - [ ] Show scores while browsing RateMyProfessors
 - [ ] Quick analysis without leaving registration page
 
