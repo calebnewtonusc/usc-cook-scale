@@ -26,28 +26,34 @@ AI-powered class difficulty analyzer that combines RateMyProfessors data with in
 
 ## ✨ Features
 
-### 🎓 **USC WebReg PDF Support** (NEW!)
+### 🎓 **USC WebReg PDF Support**
 - **Smart parsing** of USC's official WebReg PDFs
 - Automatically distinguishes **registered courses** from course bin items
 - Only analyzes classes you're actually taking, not ones you're considering
 - Zero manual entry needed - just download and upload!
 - See [WEBREG-PARSER-FEATURE.md](./WEBREG-PARSER-FEATURE.md) for details
 
-### 🤖 **100% AI-Powered**
-- **Claude Sonnet 4.5** intelligently parses schedules from ANY format
-- Understands conversational text: "I'm taking CSCI 104 with Redekopp for 4 units"
-- Handles complex professor names, written numbers, and mixed formats
-- **NO fake data** - everything is real and legitimate
+### 🤖 **V2: Enhanced AI-Powered Analysis** (NEW!)
+- **Claude Sonnet 4.5** with robust JSON parsing and error handling
+- **Intelligent professor matching** with name format parsing ("Last, First" → "First Last")
+- **LLM-powered course difficulty analysis** considering USC-specific reputation and workload
+- **USC course database** with known difficult courses (CSCI-104: 85, MATH-226: 75, etc.)
+- **Transparent error tracking** - see exactly what data is available vs fallback estimates
+- **Best match selection** - automatically chooses professors with most reviews for accuracy
 
-### 📊 **Real RateMyProfessors Data**
-- Live scraping from RateMyProfessors GraphQL API
-- Quality ratings, difficulty scores, and "would take again" percentages
-- USC-specific professor data (schoolID: 1381)
+### 📊 **Real Student Data & Insights**
+- **Live RateMyProfessors data** via GraphQL API with verified professor matching
+- **Real student review quotes** extracted and displayed with ratings and course context
+- **Reddit discussions** from r/USC with upvote counts and direct links
+- **AI-generated insights** synthesizing all data sources for each class
+- **Personalized survival tips** based on actual student experiences and professor ratings
+- USC-specific data (schoolID: 1381) with confidence scoring
 
-### 🎯 **Smart Classification**
-- Automatic STEM vs Humanities detection
-- Claude AI analyzes course names to categorize correctly
-- Accounts for course type in difficulty scoring
+### 🎯 **Intelligent Overall Analysis**
+- **LLM-powered workload synergy detection** - understands compound difficulty
+- **Contextual reasoning** about time management, exam schedules, and study balance
+- **Dynamic verbal labels** with nuanced explanations (not just score averages)
+- **Warnings and strengths** highlighting specific challenges and advantages
 
 ### 📁 **Universal File Upload**
 - **PDF** schedules (extracted with PDF.js)
