@@ -35,6 +35,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 Extract all courses from this text and return them as JSON. Be VERY flexible and intelligent:
 
+**For USC WebReg PDFs (if detected):**
+- ONLY extract courses that say "This section is Registered"
+- IGNORE courses that say "Not Scheduled and Not Registered" (these are just in the course bin, not actually enrolled)
+- Look for patterns like:
+  - Course: "CSCI-103" or "MATH-225" or "MPGU-120A"
+  - Instructor: "Slocum, Carter" or "Tabing, Felicia"
+  - Units: "4.0" or "2.0"
+- For Type: Lab, Quiz, Discussion sections → ignore (0 units), only include Lecture sections
+- The status "This section is Registered" means the student IS taking that class
+
+**For general text/conversational format:**
 - Handle conversational language ("So Mark, what are your courses...", "I'm taking...", etc.)
 - Extract course codes/names (e.g., "Chem 105B", "CSCI 104", "Spanish 150", "GESM 110")
 - Extract professor names (including complex names like "Consuelo-Siguenza Ortiz", "Watts/Bearacat")
