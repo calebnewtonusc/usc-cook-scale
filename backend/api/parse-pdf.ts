@@ -2,13 +2,15 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import pdf from 'pdf-parse';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS headers
+  // CORS headers - must be set before any return statements
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Max-Age', '86400');
 
+  // Handle preflight request
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
   if (req.method !== 'POST') {
