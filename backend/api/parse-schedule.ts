@@ -42,13 +42,15 @@ Extract all courses from this text and return them as JSON. Be VERY flexible and
 - Ignore filler words, questions, and conversational fluff
 - Be smart about abbreviations (Prof, Professor, etc.)
 
+IMPORTANT: If the text does NOT contain any course schedule information (e.g., it's random text, a conversation about something else, or insufficient information), return an empty array.
+
 Schedule text:
 ${scheduleText}
 
 Return ONLY valid JSON array, no explanations or other text:
 [{"courseName": "CHEM 105B", "professor": "Moon", "units": 4}]
 
-If there are absolutely NO courses mentioned, return: []`
+If there are absolutely NO courses mentioned OR insufficient schedule information, return: []`
     });
 
     // Extract JSON from response

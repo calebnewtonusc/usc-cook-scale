@@ -1,63 +1,46 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import type { ClassInput } from '../types';
-import { parsePDF, parseICS } from '../services/parsers';
+import { parseAnyFile } from '../services/parsers';
 import ManualEntry from './ManualEntry';
 
 interface UploadScheduleProps {
   onAnalyze: (classes: ClassInput[]) => void;
 }
 
-type Tab = 'pdf' | 'ics' | 'manual';
+type Tab = 'upload' | 'text';
 
 export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('manual');
+  const [activeTab, setActiveTab] = useState<Tab>('text');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFile = async (file: File, type: 'pdf' | 'ics') => {
+  const handleFile = async (file: File) => {
     setLoading(true);
     setError(null);
 
     try {
-      let classes: ClassInput[];
-
-      if (type === 'pdf') {
-        classes = await parsePDF(file);
-      } else {
-        classes = await parseICS(file);
-      }
+      const classes = await parseAnyFile(file);
 
       if (classes.length === 0) {
-        setError('No classes found in the file. Please try manual entry.');
+        setError('Could not find any classes in the file. The file may not contain schedule information, or the format is unclear. Please try text entry instead.');
         setLoading(false);
         return;
       }
 
       onAnalyze(classes);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to parse file');
+      setError(err instanceof Error ? err.message : 'Failed to parse file. Please try text entry instead.');
     } finally {
       setLoading(false);
     }
   };
 
-  const pdfDropzone = useDropzone({
-    accept: { 'application/pdf': ['.pdf'] },
+  const fileDropzone = useDropzone({
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
       if (acceptedFiles.length > 0) {
-        handleFile(acceptedFiles[0], 'pdf');
-      }
-    }
-  });
-
-  const icsDropzone = useDropzone({
-    accept: { 'text/calendar': ['.ics'] },
-    maxFiles: 1,
-    onDrop: (acceptedFiles) => {
-      if (acceptedFiles.length > 0) {
-        handleFile(acceptedFiles[0], 'ics');
+        handleFile(acceptedFiles[0]);
       }
     }
   });
@@ -72,35 +55,24 @@ export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
           <button
             type="button"
             className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === 'pdf'
+              activeTab === 'text'
                 ? 'border-b-4 border-cook-red text-cook-red'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
-            onClick={() => setActiveTab('pdf')}
-          >
-            PDF Upload
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === 'ics'
-                ? 'border-b-4 border-cook-red text-cook-red'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-            onClick={() => setActiveTab('ics')}
-          >
-            ICS Upload
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === 'manual'
-                ? 'border-b-4 border-cook-red text-cook-red'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-            onClick={() => setActiveTab('manual')}
+            onClick={() => setActiveTab('text')}
           >
             Text Entry
+          </button>
+          <button
+            type="button"
+            className={`px-4 py-2 font-medium transition-colors ${
+              activeTab === 'upload'
+                ? 'border-b-4 border-cook-red text-cook-red'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+            onClick={() => setActiveTab('upload')}
+          >
+            Upload File
           </button>
         </div>
 
@@ -111,65 +83,43 @@ export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
         )}
 
         {/* Tab Content */}
-        {activeTab === 'pdf' && (
-          <div
-            {...pdfDropzone.getRootProps()}
-            className={`border-3 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
-              pdfDropzone.isDragActive
-                ? 'border-cook-red bg-red-50'
-                : 'border-gray-300 hover:border-cook-red'
-            }`}
-          >
-            <input {...pdfDropzone.getInputProps()} />
-            {loading ? (
-              <div className="text-cook-red">
-                <div className="animate-spin text-4xl mb-2">🔥</div>
-                <p className="font-medium">Parsing your schedule...</p>
-              </div>
-            ) : (
-              <>
-                <div className="text-5xl mb-4">📄</div>
-                <p className="text-lg font-medium mb-2">
-                  {pdfDropzone.isDragActive
-                    ? 'Drop your PDF here!'
-                    : 'Drag & drop your schedule PDF'}
-                </p>
-                <p className="text-gray-600">or click to browse</p>
-              </>
-            )}
+        {activeTab === 'text' && <ManualEntry onSubmit={onAnalyze} />}
+
+        {activeTab === 'upload' && (
+          <div>
+            <div
+              {...fileDropzone.getRootProps()}
+              className={`border-3 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
+                fileDropzone.isDragActive
+                  ? 'border-cook-red bg-red-50'
+                  : 'border-gray-300 hover:border-cook-red'
+              }`}
+            >
+              <input {...fileDropzone.getInputProps()} />
+              {loading ? (
+                <div className="text-cook-red">
+                  <div className="animate-spin text-4xl mb-2">🔥</div>
+                  <p className="font-medium">AI is reading your file...</p>
+                  <p className="text-sm text-gray-600 mt-2">This may take a moment</p>
+                </div>
+              ) : (
+                <>
+                  <div className="text-5xl mb-4">📁</div>
+                  <p className="text-lg font-medium mb-2">
+                    {fileDropzone.isDragActive
+                      ? 'Drop your file here!'
+                      : 'Drag & drop ANY file'}
+                  </p>
+                  <p className="text-gray-600 mb-4">or click to browse</p>
+                  <div className="text-sm text-gray-500 space-y-1">
+                    <p>✅ PDF, Image (PNG/JPG), Text, ICS/Calendar</p>
+                    <p className="font-medium text-cook-red">Our AI can read anything! 🔥</p>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         )}
-
-        {activeTab === 'ics' && (
-          <div
-            {...icsDropzone.getRootProps()}
-            className={`border-3 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
-              icsDropzone.isDragActive
-                ? 'border-cook-red bg-red-50'
-                : 'border-gray-300 hover:border-cook-red'
-            }`}
-          >
-            <input {...icsDropzone.getInputProps()} />
-            {loading ? (
-              <div className="text-cook-red">
-                <div className="animate-spin text-4xl mb-2">🔥</div>
-                <p className="font-medium">Parsing your schedule...</p>
-              </div>
-            ) : (
-              <>
-                <div className="text-5xl mb-4">📅</div>
-                <p className="text-lg font-medium mb-2">
-                  {icsDropzone.isDragActive
-                    ? 'Drop your ICS file here!'
-                    : 'Drag & drop your calendar file'}
-                </p>
-                <p className="text-gray-600">or click to browse</p>
-              </>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'manual' && <ManualEntry onSubmit={onAnalyze} />}
       </div>
     </div>
   );
