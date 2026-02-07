@@ -60,16 +60,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Invalid request: classes array is required' });
     }
 
+    // Validate each class
+    for (const cls of classes) {
+      if (!cls.courseName || typeof cls.courseName !== 'string') {
+        return res.status(400).json({ error: 'Invalid class: courseName is required' });
+      }
+      if (!cls.professor || typeof cls.professor !== 'string') {
+        return res.status(400).json({ error: 'Invalid class: professor is required' });
+      }
+      if (!cls.units || typeof cls.units !== 'number' || cls.units <= 0) {
+        return res.status(400).json({ error: 'Invalid class: units must be a positive number' });
+      }
+    }
+
     console.log(`Analyzing ${classes.length} classes...`);
 
     // Process each class
     const results: ClassResult[] = await Promise.all(
       classes.map(async (cls: ClassInput) => {
-        // Determine class type if not provided
-        const classType = cls.type || await determineClassType(cls.courseName);
-
-        // Get professor rating
-        const professorRating = await getProfessorRating(cls.professor);
+        // Determine class type and get professor rating in parallel
+        const [classType, professorRating] = await Promise.all([
+          cls.type ? Promise.resolve(cls.type) : determineClassType(cls.courseName),
+          getProfessorRating(cls.professor)
+        ]);
 
         // Calculate score
         const { score, explanation } = calculateClassScore(cls, classType, professorRating);

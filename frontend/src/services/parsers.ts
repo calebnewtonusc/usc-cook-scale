@@ -53,10 +53,16 @@ async function parseImageFile(file: File): Promise<ClassInput[]> {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to parse image');
+    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+    throw new Error(`Failed to parse image: ${errorData.error || response.statusText}`);
   }
 
   const data = await response.json();
+
+  if (!data || !data.classes) {
+    throw new Error('Invalid response from image parser');
+  }
+
   return data.classes;
 }
 
@@ -83,7 +89,7 @@ async function extractPDFText(file: File): Promise<string> {
     const page = await pdf.getPage(i);
     const textContent = await page.getTextContent();
     const pageText = textContent.items
-      .map((item: any) => item.str)
+      .map((item) => ('str' in item ? item.str : ''))
       .join(' ');
     fullText += pageText + '\n';
   }
