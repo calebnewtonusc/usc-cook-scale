@@ -1,10 +1,8 @@
-import * as pdfjsLib from 'pdfjs-dist';
 import ICAL from 'ical.js';
 import type { ClassInput } from '../types';
 import { parseScheduleText } from './api';
 
-// Set up PDF.js worker using unpkg CDN (more reliable for Vite)
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 /**
  * Universal file parser that accepts ANY file type (including images) and uses LLM to parse it
@@ -20,8 +18,8 @@ export async function parseAnyFile(file: File): Promise<ClassInput[]> {
 
     // Extract text based on file type
     if (file.type === 'application/pdf') {
-      console.log('Extracting text from PDF...');
-      textContent = await extractPDFText(file);
+      console.log('Sending PDF to server for extraction...');
+      textContent = await extractPDFTextServerSide(file);
       console.log(`Extracted ${textContent.length} characters from PDF`);
     } else if (file.type === 'text/calendar' || file.name.endsWith('.ics')) {
       textContent = await extractICSText(file);
@@ -89,23 +87,33 @@ function fileToBase64(file: File): Promise<string> {
   });
 }
 
-async function extractPDFText(file: File): Promise<string> {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+async function extractPDFTextServerSide(file: File): Promise<string> {
+  // Convert PDF to base64
+  const base64 = await fileToBase64(file);
 
-  let fullText = '';
+  // Send to backend for server-side parsing
+  const response = await fetch(`${API_URL}/api/parse-pdf`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      pdfBase64: base64
+    })
+  });
 
-  // Extract text from all pages
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const textContent = await page.getTextContent();
-    const pageText = textContent.items
-      .map((item) => ('str' in item ? item.str : ''))
-      .join(' ');
-    fullText += pageText + '\n';
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+    throw new Error(`Failed to parse PDF: ${errorData.error || response.statusText}`);
   }
 
-  return fullText;
+  const data = await response.json();
+
+  if (!data || !data.text) {
+    throw new Error('Invalid response from PDF parser');
+  }
+
+  return data.text;
 }
 
 async function extractICSText(file: File): Promise<string> {
