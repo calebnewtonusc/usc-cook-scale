@@ -5,7 +5,11 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <div className="inline-block mb-6">
-            <span className="text-6xl md:text-8xl animate-pulse">🔥</span>
+            <img
+              src="/logo.png"
+              alt="USC Cook Scale Logo"
+              className="w-32 h-32 md:w-48 md:h-48 mx-auto animate-pulse"
+            />
           </div>
           <h1 className="text-6xl md:text-8xl font-black mb-6">
             <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">

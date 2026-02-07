@@ -58,11 +58,18 @@ function App() {
           >
             ← Back to Home
           </button>
-          <h1 className="text-4xl md:text-5xl font-black mb-2">
-            <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">
-              USC Cook Scale
-            </span>
-          </h1>
+          <div className="flex items-center justify-center gap-4 mb-2">
+            <img
+              src="/logo.png"
+              alt="USC Cook Scale Logo"
+              className="w-12 h-12 md:w-16 md:h-16"
+            />
+            <h1 className="text-4xl md:text-5xl font-black">
+              <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">
+                USC Cook Scale
+              </span>
+            </h1>
+          </div>
           <p className="text-lg text-gray-700">
             How cooked is your schedule?
           </p>
