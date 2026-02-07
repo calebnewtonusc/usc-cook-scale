@@ -1,5 +1,6 @@
 {
   "version": 2,
   "installCommand": "npm install",
-  "buildCommand": "echo 'No build needed - using serverless functions'"
+  "buildCommand": "mkdir -p public && echo 'Serverless functions' > public/index.html",
+  "outputDirectory": "public"
 }
