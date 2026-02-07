@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import pdf from 'pdf-parse';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers - must be set before any return statements
@@ -8,9 +7,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   res.setHeader('Access-Control-Max-Age', '86400');
 
-  // Handle preflight request
+  // Handle preflight request immediately
   if (req.method === 'OPTIONS') {
-    return res.status(204).end();
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
@@ -25,6 +24,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     console.log('Parsing PDF on server...');
+
+    // Dynamically import pdf-parse only when needed
+    const pdf = (await import('pdf-parse')).default;
 
     // Convert base64 to buffer
     const pdfBuffer = Buffer.from(pdfBase64, 'base64');
