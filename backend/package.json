@@ -13,7 +13,9 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.38",
     "@anthropic-ai/sdk": "^0.73.0",
+    "ai": "^6.0.75",
     "axios": "^1.13.4",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",

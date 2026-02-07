@@ -1,8 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import Anthropic from '@anthropic-ai/sdk';
+import { createAnthropic } from '@ai-sdk/anthropic';
+import { generateText } from 'ai';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const anthropic = createAnthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -26,13 +27,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Invalid request: scheduleText is required' });
     }
 
-    // Use Claude AI to parse the schedule
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
-      max_tokens: 2000,
-      messages: [{
-        role: 'user',
-        content: `You are an expert at parsing USC course schedules from any format - structured tables, conversational text, bullet points, or natural language.
+    // Use Claude AI to parse the schedule with Vercel AI SDK
+    const { text } = await generateText({
+      model: anthropic('claude-sonnet-4-5-20250929'),
+      maxTokens: 2000,
+      prompt: `You are an expert at parsing USC course schedules from any format - structured tables, conversational text, bullet points, or natural language.
 
 Extract all courses from this text and return them as JSON. Be VERY flexible and intelligent:
 
@@ -50,15 +49,10 @@ Return ONLY valid JSON array, no explanations or other text:
 [{"courseName": "CHEM 105B", "professor": "Moon", "units": 4}]
 
 If there are absolutely NO courses mentioned, return: []`
-      }]
     });
 
-    const response = message.content[0].type === 'text'
-      ? message.content[0].text.trim()
-      : '[]';
-
     // Extract JSON from response
-    const jsonMatch = response.match(/\[[\s\S]*\]/);
+    const jsonMatch = text.trim().match(/\[[\s\S]*\]/);
     const jsonStr = jsonMatch ? jsonMatch[0] : '[]';
 
     const classes = JSON.parse(jsonStr);
@@ -68,6 +62,9 @@ If there are absolutely NO courses mentioned, return: []`
     return res.status(200).json({ classes });
   } catch (error) {
     console.error('Error parsing schedule:', error);
-    return res.status(500).json({ error: 'Failed to parse schedule' });
+    return res.status(500).json({
+      error: 'Failed to parse schedule',
+      details: error instanceof Error ? error.message : String(error)
+    });
   }
 }
