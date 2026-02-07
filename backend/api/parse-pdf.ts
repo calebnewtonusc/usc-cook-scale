@@ -37,11 +37,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         reject(new Error(errData.parserError));
       });
 
-      pdfParser.on('pdfParser_dataReady', () => {
+      pdfParser.on('pdfParser_dataReady', (pdfData: any) => {
         try {
-          // Extract text from all pages
-          const rawText = pdfParser.getRawTextContent();
-          resolve(rawText);
+          // Extract text from all pages using pdf2json's data structure
+          let fullText = '';
+
+          if (pdfData && pdfData.Pages) {
+            for (const page of pdfData.Pages) {
+              if (page.Texts) {
+                for (const text of page.Texts) {
+                  if (text.R) {
+                    for (const run of text.R) {
+                      if (run.T) {
+                        // Decode URI encoded text
+                        fullText += decodeURIComponent(run.T) + ' ';
+                      }
+                    }
+                  }
+                }
+              }
+              fullText += '\n';
+            }
+          }
+
+          resolve(fullText.trim());
         } catch (err) {
           reject(err);
         }
