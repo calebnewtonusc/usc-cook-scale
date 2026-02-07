@@ -11,7 +11,7 @@ interface UploadScheduleProps {
 type Tab = 'pdf' | 'ics' | 'manual';
 
 export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('pdf');
+  const [activeTab, setActiveTab] = useState<Tab>('manual');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -100,7 +100,7 @@ export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
             }`}
             onClick={() => setActiveTab('manual')}
           >
-            Manual Entry
+            Text Entry
           </button>
         </div>
 

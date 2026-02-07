@@ -36,6 +36,7 @@ interface AnalysisResult {
   overallScore: number;
   verbalLabel: string;
   classes: ClassResult[];
+  totalUnits: number;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -83,8 +84,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
     );
 
-    // Calculate overall score
+    // Calculate overall score and total units
     const totalScore = results.reduce((sum, cls) => sum + cls.score, 0);
+    const totalUnits = results.reduce((sum, cls) => sum + cls.units, 0);
     const overallScore = Math.min(100, Math.round(totalScore));
 
     // Determine verbal label
@@ -93,7 +95,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const result: AnalysisResult = {
       overallScore,
       verbalLabel,
-      classes: results
+      classes: results,
+      totalUnits
     };
 
     console.log(`Analysis complete: Overall score = ${overallScore} (${verbalLabel})`);
