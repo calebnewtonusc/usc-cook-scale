@@ -6,16 +6,6 @@ interface OverallScoreDisplayV2Props {
 }
 
 export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallScoreDisplayV2Props) {
-  // Color based on score
-  const getScoreColor = (score: number) => {
-    if (score <= 35) return '#10B981'; // green
-    if (score <= 50) return '#F59E0B'; // yellow
-    if (score <= 70) return '#F97316'; // orange
-    return '#DC2626'; // red
-  };
-
-  const scoreColor = getScoreColor(overall.score);
-
   // Calculate percentage for visual bar
   const percentage = overall.score;
 

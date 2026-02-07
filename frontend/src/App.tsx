@@ -108,7 +108,7 @@ function App() {
         {!loading && !error && (
           <>
             {result ? (
-              <CookScoreDisplay result={result} onReset={handleReset} />
+              <CookScoreDisplayV2 result={result} onReset={handleReset} />
             ) : (
               <UploadSchedule onAnalyze={handleAnalyze} />
             )}
