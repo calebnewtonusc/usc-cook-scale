@@ -43,6 +43,23 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
             </div>
           </div>
 
+          {/* Errors/Warnings */}
+          {cls.errors && cls.errors.length > 0 && (
+            <div className="mb-4 p-3 bg-yellow-50 rounded-lg border-2 border-yellow-300">
+              <div className="flex items-start gap-2">
+                <span className="text-lg">⚠️</span>
+                <div className="flex-1">
+                  <p className="text-xs font-bold text-yellow-900 mb-1">Data Limitations</p>
+                  <ul className="text-xs text-yellow-800 space-y-0.5">
+                    {cls.errors.map((error, idx) => (
+                      <li key={idx}>• {error}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* AI Insights */}
           <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
             <div className="flex items-start gap-3">

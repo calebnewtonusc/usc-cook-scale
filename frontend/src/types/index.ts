@@ -67,6 +67,7 @@ export interface ClassAnalysis {
   rmpLink: string;
   redditSearchLink: string;
   courseSearchLink: string;
+  errors?: string[]; // NEW: Track what failed
 }
 
 export interface OverallAnalysis {
