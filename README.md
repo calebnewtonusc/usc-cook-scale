@@ -14,13 +14,24 @@ AI-powered class difficulty analyzer that combines RateMyProfessors data with in
 
 ## 🎯 Quick Start
 
-1. Visit [usc-cook-scale.vercel.app](https://usc-cook-scale.vercel.app/)
-2. Paste your schedule text OR upload a file (PDF/image/calendar)
-3. Get your Cook Scale score instantly!
+### **For USC Students:**
+1. Go to WebReg → Print/Save your schedule as PDF
+2. Visit [usc-cook-scale.vercel.app](https://usc-cook-scale.vercel.app/)
+3. Upload your WebReg PDF
+4. Get instant Cook Scale analysis! 🔥
+
+**Or manually:** Paste your schedule text OR upload any file (PDF/image/calendar)
 
 ---
 
 ## ✨ Features
+
+### 🎓 **USC WebReg PDF Support** (NEW!)
+- **Smart parsing** of USC's official WebReg PDFs
+- Automatically distinguishes **registered courses** from course bin items
+- Only analyzes classes you're actually taking, not ones you're considering
+- Zero manual entry needed - just download and upload!
+- See [WEBREG-PARSER-FEATURE.md](./WEBREG-PARSER-FEATURE.md) for details
 
 ### 🤖 **100% AI-Powered**
 - **Claude Sonnet 4.5** intelligently parses schedules from ANY format
