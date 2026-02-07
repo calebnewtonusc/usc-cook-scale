@@ -1,3 +1,5 @@
 {
-  "version": 2
+  "version": 2,
+  "installCommand": "npm install",
+  "buildCommand": "echo 'No build needed - using serverless functions'"
 }
