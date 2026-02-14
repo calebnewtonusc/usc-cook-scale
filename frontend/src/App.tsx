@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader2, XCircle } from 'lucide-react';
+import { Loader2, XCircle, GraduationCap } from 'lucide-react';
 import LandingPage from './components/LandingPage';
 import UploadSchedule from './components/UploadSchedule';
 import CookScoreDisplayV2 from './components/CookScoreDisplayV2';
@@ -180,7 +180,7 @@ function App() {
               Powered by Claude AI • Data from RateMyProfessors, Reddit & More
             </p>
             <p className="mt-1">
-              Made for USC students 🎓
+              Made for USC students <GraduationCap className="inline w-4 h-4" />
             </p>
           </div>
           <div className="mt-4 text-xs text-gray-500 max-w-3xl mx-auto px-4">

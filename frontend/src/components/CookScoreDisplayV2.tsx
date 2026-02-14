@@ -1,4 +1,4 @@
-import { AlertTriangle, Save } from 'lucide-react';
+import { AlertTriangle, Save, Lightbulb, GraduationCap, MessageCircle } from 'lucide-react';
 import type { AnalysisResultV2 } from '../types';
 import OverallScoreDisplayV2 from './OverallScoreDisplayV2';
 import ClassBreakdownV2 from './ClassBreakdownV2';
@@ -51,7 +51,7 @@ export default function CookScoreDisplayV2({ result, onReset }: CookScoreDisplay
               Use this as one data point among many when planning your semester.
             </p>
             <p className="text-xs text-gray-600 mt-2">
-              💡 Always consult with your academic advisor and consider your own strengths, interests, and goals.
+              <Lightbulb className="inline w-4 h-4 mr-1" /> Always consult with your academic advisor and consider your own strengths, interests, and goals.
             </p>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function CookScoreDisplayV2({ result, onReset }: CookScoreDisplay
       {/* Share Section */}
       <div className="card bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 text-center">
         <h4 className="text-lg font-bold text-gray-900 mb-2">
-          Help Fellow Trojans! 🎓
+          Help Fellow Trojans! <GraduationCap className="inline w-5 h-5" />
         </h4>
         <p className="text-sm text-gray-700 mb-4">
           Share USC Cook Scale with your friends to help them plan their semesters
@@ -82,7 +82,7 @@ export default function CookScoreDisplayV2({ result, onReset }: CookScoreDisplay
             rel="noopener noreferrer"
             className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm"
           >
-            💬 Share on r/USC
+            <MessageCircle className="inline w-4 h-4 mr-1" /> Share on r/USC
           </a>
         </div>
       </div>

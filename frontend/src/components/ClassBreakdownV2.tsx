@@ -1,4 +1,4 @@
-import { BookOpen, AlertTriangle, Bot, Star, Flame, BarChart3 } from 'lucide-react';
+import { BookOpen, AlertTriangle, Bot, Star, Flame, BarChart3, Users, MessageCircle, Lightbulb, Link, Search } from 'lucide-react';
 import type { ClassAnalysis } from '../types';
 
 interface ClassBreakdownV2Props {
@@ -24,7 +24,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 {cls.courseName}
               </h4>
               <p className="text-xl text-gray-700 font-medium mb-1">
-                👨‍🏫 Prof. {cls.professor}
+                <Users className="inline w-4 h-4 mr-1" /> Prof. {cls.professor}
               </p>
               <p className="text-sm text-gray-500">{cls.units} units</p>
               {cls.professorMatch && (
@@ -108,7 +108,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {cls.rmpQuotes.length > 0 && (
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xl">💬</span>
+                <span className="text-xl"><MessageCircle className="w-6 h-6" /></span>
                 <p className="text-sm font-bold text-gray-900">
                   What Students Say (RateMyProfessors)
                 </p>
@@ -208,7 +208,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {/* Survival Tips */}
           <div className="mb-6 p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border-2 border-green-200">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">💡</span>
+              <span className="text-2xl"><Lightbulb className="w-5 h-5" /></span>
               <p className="text-base font-bold text-green-900">Survival Tips</p>
             </div>
             <ul className="space-y-2">
@@ -233,7 +233,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {/* Additional Research Links */}
           <div className="mt-6 pt-4 border-t-2 border-gray-100">
             <p className="text-xs text-gray-600 mb-3 font-medium">
-              🔗 Additional Research
+              <Link className="inline w-4 h-4 mr-1" /> Additional Research
             </p>
             <div className="flex flex-wrap gap-3">
               <a
@@ -252,7 +252,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 rel="noopener noreferrer"
                 className="text-xs bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-2 rounded-lg font-medium transition-colors"
               >
-                💬 Reddit Discussions
+                <MessageCircle className="w-6 h-6" /> Reddit Discussions
               </a>
               <a
                 href={cls.courseSearchLink}
@@ -260,7 +260,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 rel="noopener noreferrer"
                 className="text-xs bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded-lg font-medium transition-colors"
               >
-                🔍 Google Search
+                <Search className="w-6 h-6" /> Google Search
               </a>
             </div>
           </div>

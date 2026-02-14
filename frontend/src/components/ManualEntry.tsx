@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Flame, Loader2, FileText } from 'lucide-react';
 import type { ClassInput } from '../types';
 import { parseScheduleText } from '../services/api';
 
@@ -48,14 +49,14 @@ WRIT 150 - Writing - Johnson - 4 units`;
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Instructions */}
       <div className="bg-yellow-50 border-l-4 border-cook-yellow p-4 rounded">
-        <h3 className="font-bold text-gray-900 mb-2">📝 What to include:</h3>
+        <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2"><FileText className="w-5 h-5" /> What to include:</h3>
         <ul className="text-sm text-gray-700 space-y-1">
           <li>• <strong>Course names</strong> (e.g., CSCI 104, Math 225)</li>
           <li>• <strong>Professor names</strong> (e.g., Mark Redekopp)</li>
           <li>• <strong>Units</strong> (optional - we'll estimate if missing)</li>
         </ul>
-        <p className="text-xs text-gray-600 mt-3">
-          Just paste your schedule or type it naturally - our AI will figure it out! 🔥
+        <p className="text-xs text-gray-600 mt-3 flex items-center gap-1">
+          Just paste your schedule or type it naturally - our AI will figure it out! <Flame className="inline w-4 h-4 text-cook-red" />
         </p>
       </div>
 
@@ -91,7 +92,7 @@ WRIT 150 - Writing - Johnson - 4 units`;
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
-            <span className="animate-spin">🔥</span>
+            <Loader2 className="w-5 h-5 animate-spin" />
             AI is reading your schedule...
           </span>
         ) : (

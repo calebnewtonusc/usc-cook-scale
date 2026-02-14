@@ -1,3 +1,4 @@
+import { Flame, Skull, Circle, CircleDot, Disc } from 'lucide-react';
 import type { AnalysisResult } from '../types';
 import ClassBreakdown from './ClassBreakdown';
 
@@ -22,7 +23,9 @@ export default function CookScoreDisplay({ result, onReset }: CookScoreDisplayPr
     <div className="w-full max-w-4xl mx-auto space-y-6 animate-fade-in">
       {/* Overall Score Card */}
       <div className="card text-center">
-        <h2 className="text-3xl font-bold mb-2">🔥 Your Cook Scale Score 🔥</h2>
+        <h2 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
+          <Flame className="w-8 h-8 text-cook-red" /> Your Cook Scale Score <Flame className="w-8 h-8 text-cook-red" />
+        </h2>
 
         <div className="my-8">
           <div className="text-7xl font-black text-cook-red mb-2">
@@ -76,27 +79,27 @@ export default function CookScoreDisplay({ result, onReset }: CookScoreDisplayPr
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
           <div className="flex items-center gap-2">
             <span className="w-4 h-4 bg-blue-500 rounded"></span>
-            <span>0-20: Raw 🥩</span>
+            <span className="flex items-center gap-1">0-20: Raw <Circle className="inline w-3 h-3" strokeWidth={3} /></span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-4 h-4 bg-green-500 rounded"></span>
-            <span>21-35: Lightly Toasted 🍞</span>
+            <span className="flex items-center gap-1">21-35: Lightly Toasted <CircleDot className="inline w-3 h-3" strokeWidth={3} /></span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-4 h-4 bg-yellow-500 rounded"></span>
-            <span>36-50: Medium 🍳</span>
+            <span className="flex items-center gap-1">36-50: Medium <Disc className="inline w-3 h-3" strokeWidth={2} /></span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-4 h-4 bg-orange-500 rounded"></span>
-            <span>51-65: Well Done 🥓</span>
+            <span className="flex items-center gap-1">51-65: Well Done <Disc className="inline w-3 h-3 fill-current" /></span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-4 h-4 bg-red-500 rounded"></span>
-            <span>66-80: Extra Crispy 🔥</span>
+            <span className="flex items-center gap-1">66-80: Extra Crispy <Flame className="inline w-3 h-3" /></span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-4 h-4 bg-red-900 rounded"></span>
-            <span>81-100: Absolutely Burnt 💀</span>
+            <span className="flex items-center gap-1">81-100: Absolutely Burnt <Skull className="inline w-3 h-3" /></span>
           </div>
         </div>
       </div>

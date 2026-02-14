@@ -1,4 +1,4 @@
-import { AlertTriangle, Flame, Rocket } from 'lucide-react';
+import { AlertTriangle, Flame, Rocket, FileText, Search, BarChart3, Star, MessageCircle, BookOpen, GraduationCap, TrendingUp, Bot, Users, Lightbulb, Link, Circle, Disc, CircleDot, Skull } from 'lucide-react';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -90,7 +90,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
           <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="text-5xl mb-4">📝</div>
+              <div className="mb-4"><FileText className="w-20 h-20 text-cook-red mx-auto" /></div>
               <h3 className="text-xl font-bold mb-2">1. Upload Schedule</h3>
               <p className="text-gray-600">
                 Paste text, upload PDF/screenshot, or drop a calendar file.
@@ -98,7 +98,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
               </p>
             </div>
             <div className="text-center">
-              <div className="text-5xl mb-4">🔍</div>
+              <div className="mb-4"><Search className="w-20 h-20 text-cook-red mx-auto" /></div>
               <h3 className="text-xl font-bold mb-2">2. AI Research</h3>
               <p className="text-gray-600">
                 We scan RateMyProfessors, Reddit, course reviews, and aggregate
@@ -106,7 +106,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
               </p>
             </div>
             <div className="text-center">
-              <div className="text-5xl mb-4">📊</div>
+              <div className="mb-4"><BarChart3 className="w-20 h-20 text-cook-red mx-auto" /></div>
               <h3 className="text-xl font-bold mb-2">3. Get Insights</h3>
               <p className="text-gray-600">
                 Receive your Cook Scale score, professor insights, workload
@@ -126,7 +126,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">⭐</span>
+                <Star className="w-8 h-8 text-cook-red flex-shrink-0" fill="currentColor" />
                 <span className="font-bold">RateMyProfessors</span>
               </div>
               <p className="text-sm text-gray-600">
@@ -135,7 +135,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
             </div>
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">💬</span>
+                <MessageCircle className="w-8 h-8 text-cook-red flex-shrink-0" />
                 <span className="font-bold">Reddit r/USC</span>
               </div>
               <p className="text-sm text-gray-600">
@@ -144,7 +144,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
             </div>
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">📚</span>
+                <BookOpen className="w-8 h-8 text-cook-red flex-shrink-0" />
                 <span className="font-bold">Course Reviews</span>
               </div>
               <p className="text-sm text-gray-600">
@@ -153,7 +153,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
             </div>
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">🎓</span>
+                <GraduationCap className="w-8 h-8 text-cook-red flex-shrink-0" />
                 <span className="font-bold">USC Forums</span>
               </div>
               <p className="text-sm text-gray-600">
@@ -162,7 +162,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
             </div>
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">📈</span>
+                <TrendingUp className="w-8 h-8 text-cook-red flex-shrink-0" />
                 <span className="font-bold">Grade Distributions</span>
               </div>
               <p className="text-sm text-gray-600">
@@ -171,7 +171,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
             </div>
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">🤖</span>
+                <Bot className="w-8 h-8 text-cook-red flex-shrink-0" />
                 <span className="font-bold">AI Analysis</span>
               </div>
               <p className="text-sm text-gray-600">
@@ -187,12 +187,12 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
           <div className="space-y-4">
             <div className="border-l-4 border-cook-red p-4 bg-red-50">
               <div className="flex items-start gap-3">
-                <span className="text-2xl">🔥</span>
+                <Flame className="w-8 h-8 text-cook-red flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-bold mb-1">Overall Cook Scale Score</h3>
                   <p className="text-sm text-gray-700">
                     Your semester difficulty rated 0-100 with verbal label
-                    (Raw 🥩 → Absolutely Burnt 💀)
+                    (Raw <Circle className="inline w-4 h-4" /> → Absolutely Burnt <Skull className="inline w-4 h-4" />)
                   </p>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
 
             <div className="border-l-4 border-yellow-500 p-4 bg-yellow-50">
               <div className="flex items-start gap-3">
-                <span className="text-2xl">👨‍🏫</span>
+                <Users className="w-8 h-8 text-yellow-600 flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-bold mb-1">Professor Deep Dive</h3>
                   <p className="text-sm text-gray-700">
@@ -213,7 +213,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
 
             <div className="border-l-4 border-blue-500 p-4 bg-blue-50">
               <div className="flex items-start gap-3">
-                <span className="text-2xl">📊</span>
+                <BarChart3 className="w-8 h-8 text-blue-600 flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-bold mb-1">Per-Class Breakdown</h3>
                   <p className="text-sm text-gray-700">
@@ -226,7 +226,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
 
             <div className="border-l-4 border-green-500 p-4 bg-green-50">
               <div className="flex items-start gap-3">
-                <span className="text-2xl">💡</span>
+                <Lightbulb className="w-8 h-8 text-green-600 flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-bold mb-1">Smart Recommendations</h3>
                   <p className="text-sm text-gray-700">
@@ -239,7 +239,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
 
             <div className="border-l-4 border-purple-500 p-4 bg-purple-50">
               <div className="flex items-start gap-3">
-                <span className="text-2xl">🔗</span>
+                <Link className="w-8 h-8 text-purple-600 flex-shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-bold mb-1">Source Links</h3>
                   <p className="text-sm text-gray-700">
@@ -257,32 +257,32 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
           <h2 className="text-3xl font-bold text-center mb-6">The Cooked Scale</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="bg-blue-100 p-4 rounded-lg border-2 border-blue-300">
-              <div className="text-3xl mb-2">🥩</div>
+              <div className="mb-2"><Circle className="w-12 h-12 text-green-600 mx-auto" strokeWidth={3} /></div>
               <div className="font-bold text-lg mb-1">0-20: Raw</div>
               <p className="text-sm">Easy semester, manageable workload</p>
             </div>
             <div className="bg-green-100 p-4 rounded-lg border-2 border-green-300">
-              <div className="text-3xl mb-2">🍞</div>
+              <div className="mb-2"><CircleDot className="w-12 h-12 text-yellow-600 mx-auto" strokeWidth={3} /></div>
               <div className="font-bold text-lg mb-1">21-35: Lightly Toasted</div>
               <p className="text-sm">Some challenges but doable</p>
             </div>
             <div className="bg-yellow-100 p-4 rounded-lg border-2 border-yellow-300">
-              <div className="text-3xl mb-2">🍳</div>
+              <div className="mb-2"><Disc className="w-12 h-12 text-orange-500 mx-auto" strokeWidth={2} /></div>
               <div className="font-bold text-lg mb-1">36-50: Medium</div>
               <p className="text-sm">Moderate difficulty, balanced</p>
             </div>
             <div className="bg-orange-100 p-4 rounded-lg border-2 border-orange-300">
-              <div className="text-3xl mb-2">🥓</div>
+              <div className="mb-2"><Disc className="w-12 h-12 text-red-500 mx-auto fill-current" /></div>
               <div className="font-bold text-lg mb-1">51-65: Well Done</div>
               <p className="text-sm">Challenging semester ahead</p>
             </div>
             <div className="bg-red-100 p-4 rounded-lg border-2 border-red-300">
-              <div className="text-3xl mb-2">🔥</div>
+              <div className="mb-2"><Flame className="w-12 h-12 text-cook-red mx-auto" /></div>
               <div className="font-bold text-lg mb-1">66-80: Extra Crispy</div>
               <p className="text-sm">Very difficult, plan accordingly</p>
             </div>
             <div className="bg-red-200 p-4 rounded-lg border-2 border-red-500">
-              <div className="text-3xl mb-2">💀</div>
+              <div className="mb-2"><Skull className="w-12 h-12 text-gray-800 mx-auto" /></div>
               <div className="font-bold text-lg mb-1">81-100: Absolutely Burnt</div>
               <p className="text-sm">Extremely hard—good luck!</p>
             </div>
@@ -328,8 +328,8 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
               </span>
             </div>
           </a>
-          <p className="text-sm text-gray-600">
-            Made for USC students 🎓
+          <p className="text-sm text-gray-600 flex items-center gap-2 justify-center">
+            Made for USC students <GraduationCap className="w-5 h-5 text-cook-red" />
           </p>
           <div className="text-xs text-gray-500 space-x-4">
             <button onClick={onPrivacy} className="hover:text-cook-red transition-colors">Privacy Policy</button>

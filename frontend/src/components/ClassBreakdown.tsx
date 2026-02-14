@@ -1,4 +1,4 @@
-import { BookOpen, Settings, AlertTriangle } from 'lucide-react';
+import { BookOpen, Settings, AlertTriangle, Users, Star, MessageCircle, Search, Lightbulb, Link } from 'lucide-react';
 import type { ClassScore } from '../types';
 
 interface ClassBreakdownProps {
@@ -21,7 +21,7 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
                 {cls.type === 'STEM' ? <Settings className="w-6 h-6" /> : <BookOpen className="w-6 h-6" />} {cls.courseName}
               </h4>
               <p className="text-lg text-gray-700">
-                👨‍🏫 Prof. {cls.professor}
+                <Users className="inline w-4 h-4 mr-1" /> Prof. {cls.professor}
               </p>
               <p className="text-sm text-gray-500">{cls.units} units • {cls.type}</p>
             </div>
@@ -37,7 +37,7 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
           {cls.professorRating && cls.professorRating.numRatings > 0 ? (
             <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
               <p className="text-base font-bold text-gray-800 mb-3">
-                ⭐ Professor Ratings from RateMyProfessors
+                <Star className="inline w-4 h-4 mr-1" fill="currentColor" /> Professor Ratings from RateMyProfessors
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
                 <div className="text-center">
@@ -90,7 +90,7 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
           {'rmpLink' in cls && (
             <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg border border-green-200">
               <p className="font-bold text-gray-800 mb-3">
-                🔗 Research This Professor & Class
+                <Link className="inline w-4 h-4 mr-1" /> Research This Professor & Class
               </p>
               <div className="space-y-2">
                 <a
@@ -100,7 +100,7 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
                   className="block p-2 bg-white rounded hover:bg-blue-50 transition-colors border border-gray-200"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">⭐</span>
+                    <Star className="w-6 h-6" fill="currentColor" />
                     <div className="flex-1">
                       <div className="font-medium text-sm text-gray-900">
                         RateMyProfessors Reviews
@@ -120,7 +120,7 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
                   className="block p-2 bg-white rounded hover:bg-orange-50 transition-colors border border-gray-200"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">💬</span>
+                    <span className="text-xl"><MessageCircle className="w-6 h-6" /></span>
                     <div className="flex-1">
                       <div className="font-medium text-sm text-gray-900">
                         Reddit r/USC Discussions
@@ -140,7 +140,7 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
                   className="block p-2 bg-white rounded hover:bg-purple-50 transition-colors border border-gray-200"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">🔍</span>
+                    <span className="text-xl"><Search className="w-6 h-6" /></span>
                     <div className="flex-1">
                       <div className="font-medium text-sm text-gray-900">
                         Google Search: Reviews & Experiences
@@ -155,14 +155,14 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
               </div>
 
               <p className="text-xs text-gray-600 mt-3 italic">
-                💡 Tip: Read multiple sources to get a complete picture. Different students have different experiences!
+                <Lightbulb className="inline w-4 h-4 mr-1" /> Tip: Read multiple sources to get a complete picture. Different students have different experiences!
               </p>
             </div>
           )}
 
           {/* Tips Section */}
           <div className="mt-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
-            <p className="font-bold text-gray-800 mb-2">💡 Survival Tips:</p>
+            <p className="font-bold text-gray-800 mb-2"><Lightbulb className="inline w-4 h-4 mr-1" /> Survival Tips:</p>
             <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
               {cls.score > 65 && (
                 <>

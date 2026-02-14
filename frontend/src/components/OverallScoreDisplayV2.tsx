@@ -1,4 +1,4 @@
-import { AlertTriangle, Lightbulb, BarChart3, Flame } from 'lucide-react';
+import { AlertTriangle, Lightbulb, BarChart3, Flame, Smile, Meh, Frown, Skull, Bot, Sparkles, Circle, CircleDot, Disc } from 'lucide-react';
 import type { OverallAnalysis } from '../types';
 
 interface OverallScoreDisplayV2Props {
@@ -52,10 +52,10 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
             <div className="text-sm text-red-100">Total Units</div>
           </div>
           <div className="bg-white bg-opacity-10 rounded-lg p-4 text-center backdrop-blur-sm">
-            <div className="text-3xl font-bold">
-              {overall.score <= 35 ? '😌' : overall.score <= 50 ? '😐' : overall.score <= 70 ? '😰' : '💀'}
+            <div className="flex justify-center">
+              {overall.score <= 35 ? <Smile className="w-12 h-12 text-white" /> : overall.score <= 50 ? <Meh className="w-12 h-12 text-white" /> : overall.score <= 70 ? <Frown className="w-12 h-12 text-white" /> : <Skull className="w-12 h-12 text-white" />}
             </div>
-            <div className="text-sm text-red-100">Difficulty Level</div>
+            <div className="text-sm text-red-100 mt-2">Difficulty Level</div>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
       {/* AI Reasoning */}
       <div className="card border-l-4 border-purple-500 shadow-lg">
         <div className="flex items-start gap-3">
-          <div className="text-3xl">🤖</div>
+          <Bot className="w-8 h-8 text-purple-500 flex-shrink-0" />
           <div className="flex-1">
             <h3 className="text-xl font-bold text-gray-900 mb-3">AI Analysis</h3>
             <p className="text-base text-gray-800 leading-relaxed">{overall.reasoning}</p>
@@ -115,7 +115,7 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
       {overall.strengths.length > 0 && (
         <div className="card border-l-4 border-green-500 bg-green-50 shadow-lg">
           <div className="flex items-start gap-3">
-            <div className="text-3xl">✨</div>
+            <Sparkles className="w-8 h-8 text-green-500 flex-shrink-0" />
             <div className="flex-1">
               <h3 className="text-xl font-bold text-green-900 mb-3">Strengths & Opportunities</h3>
               <ul className="space-y-2">
@@ -140,42 +140,42 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">0-20</div>
             <div className="flex-1 bg-green-100 border-l-4 border-green-500 px-3 py-2 rounded">
-              <span className="font-medium text-gray-900">Raw 🥩</span>
+              <span className="font-medium text-gray-900 flex items-center gap-2">Raw <Circle className="inline w-4 h-4" strokeWidth={3} /></span>
               <span className="text-xs text-gray-600 ml-2">- Light semester, minimal stress</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">21-35</div>
             <div className="flex-1 bg-yellow-100 border-l-4 border-yellow-500 px-3 py-2 rounded">
-              <span className="font-medium text-gray-900">Lightly Toasted 🍞</span>
+              <span className="font-medium text-gray-900 flex items-center gap-2">Lightly Toasted <CircleDot className="inline w-4 h-4" strokeWidth={3} /></span>
               <span className="text-xs text-gray-600 ml-2">- Manageable with good habits</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">36-50</div>
             <div className="flex-1 bg-orange-100 border-l-4 border-orange-500 px-3 py-2 rounded">
-              <span className="font-medium text-gray-900">Medium 🍳</span>
+              <span className="font-medium text-gray-900 flex items-center gap-2">Medium <Disc className="inline w-4 h-4" strokeWidth={2} /></span>
               <span className="text-xs text-gray-600 ml-2">- Standard USC workload</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">51-65</div>
             <div className="flex-1 bg-red-100 border-l-4 border-red-500 px-3 py-2 rounded">
-              <span className="font-medium text-gray-900">Well Done 🥓</span>
+              <span className="font-medium text-gray-900 flex items-center gap-2">Well Done <Disc className="inline w-4 h-4 fill-current" /></span>
               <span className="text-xs text-gray-600 ml-2">- Challenging but doable</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">66-80</div>
             <div className="flex-1 bg-red-200 border-l-4 border-red-600 px-3 py-2 rounded">
-              <span className="font-medium text-gray-900">Extra Crispy 🔥</span>
+              <span className="font-medium text-gray-900 flex items-center gap-2">Extra Crispy <Flame className="inline w-4 h-4" /></span>
               <span className="text-xs text-gray-600 ml-2">- Very demanding schedule</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">81-100</div>
             <div className="flex-1 bg-red-300 border-l-4 border-red-700 px-3 py-2 rounded">
-              <span className="font-medium text-gray-900">Absolutely Burnt 💀</span>
+              <span className="font-medium text-gray-900 flex items-center gap-2">Absolutely Burnt <Skull className="inline w-4 h-4" /></span>
               <span className="text-xs text-gray-600 ml-2">- Extreme difficulty</span>
             </div>
           </div>
