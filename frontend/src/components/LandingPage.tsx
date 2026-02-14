@@ -1,4 +1,12 @@
-export default function LandingPage({ onStart }: { onStart: () => void }) {
+import { AlertTriangle, Flame, Rocket } from 'lucide-react';
+
+interface LandingPageProps {
+  onStart: () => void;
+  onPrivacy?: () => void;
+  onTerms?: () => void;
+}
+
+export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-red-50">
       {/* Hero Section */}
@@ -24,11 +32,28 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
             Reddit, course reviews, and more to give you a comprehensive difficulty score.
           </p>
 
+          {/* PROMINENT DISCLAIMERS */}
+          <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6 mb-8 max-w-4xl mx-auto">
+            <div className="flex items-start gap-3 text-left">
+              <AlertTriangle className="w-6 h-6 flex-shrink-0 mt-1 text-yellow-600" />
+              <div className="space-y-2 text-sm text-gray-800">
+                <p className="font-bold text-base text-yellow-900">IMPORTANT DISCLAIMERS:</p>
+                <ul className="space-y-1.5 text-gray-700">
+                  <li><strong>Not Affiliated:</strong> This is an independent student project. Not affiliated with, endorsed by, or connected to the University of Southern California (USC), RateMyProfessors, Reddit, or any other third-party service.</li>
+                  <li><strong>Educational Purpose:</strong> Created for educational and informational purposes only as a student learning project.</li>
+                  <li><strong>Subjective Estimates:</strong> All difficulty scores are subjective algorithmic estimates based on available data and should not be considered definitive or official assessments.</li>
+                  <li><strong>Data Accuracy:</strong> While we strive for accuracy, data may be incomplete, outdated, or incorrect. Always verify information with official university sources.</li>
+                  <li><strong>USC Trademark:</strong> "USC" and "University of Southern California" are trademarks of the University of Southern California. Use of these terms is solely for descriptive purposes.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <button
             onClick={onStart}
-            className="btn-primary text-xl px-12 py-4 shadow-2xl hover:shadow-cook-red/50 transform hover:scale-105 transition-all"
+            className="btn-primary text-xl px-12 py-4 shadow-2xl hover:shadow-cook-red/50 transform hover:scale-105 transition-all inline-flex items-center gap-2"
           >
-            Analyze My Schedule 🔥
+            Analyze My Schedule <Flame className="w-5 h-5" />
           </button>
 
           <p className="text-sm text-gray-500 mt-4">
@@ -268,9 +293,9 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
         <div className="text-center mb-12">
           <button
             onClick={onStart}
-            className="btn-primary text-2xl px-16 py-6 shadow-2xl hover:shadow-cook-red/50 transform hover:scale-105 transition-all"
+            className="btn-primary text-2xl px-16 py-6 shadow-2xl hover:shadow-cook-red/50 transform hover:scale-105 transition-all inline-flex items-center gap-2"
           >
-            Get Started Now 🚀
+            Get Started Now <Rocket className="w-6 h-6" />
           </button>
           <p className="text-gray-600 mt-4">
             Join hundreds of USC students making smarter schedule decisions
@@ -306,6 +331,11 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
           <p className="text-sm text-gray-600">
             Made for USC students 🎓
           </p>
+          <div className="text-xs text-gray-500 space-x-4">
+            <button onClick={onPrivacy} className="hover:text-cook-red transition-colors">Privacy Policy</button>
+            <span>•</span>
+            <button onClick={onTerms} className="hover:text-cook-red transition-colors">Terms of Service</button>
+          </div>
         </div>
       </div>
     </div>

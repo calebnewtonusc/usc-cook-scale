@@ -1,3 +1,4 @@
+import { AlertTriangle, Lightbulb, BarChart3, Flame } from 'lucide-react';
 import type { OverallAnalysis } from '../types';
 
 interface OverallScoreDisplayV2Props {
@@ -14,7 +15,9 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
       {/* Main Score Card */}
       <div className="card bg-gradient-to-br from-cook-red via-red-600 to-orange-600 text-white shadow-2xl">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold mb-2">🔥 Your Cooked Scale Score 🔥</h2>
+          <h2 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
+            <Flame className="w-8 h-8" /> Your Cooked Scale Score <Flame className="w-8 h-8" />
+          </h2>
           <p className="text-red-100 text-sm">AI-Powered Semester Difficulty Analysis</p>
         </div>
 
@@ -72,7 +75,7 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
       {overall.insights.length > 0 && (
         <div className="card border-l-4 border-blue-500 shadow-lg">
           <div className="flex items-start gap-3">
-            <div className="text-3xl">💡</div>
+            <Lightbulb className="w-8 h-8 text-blue-500" />
             <div className="flex-1">
               <h3 className="text-xl font-bold text-gray-900 mb-3">Key Insights</h3>
               <ul className="space-y-2">
@@ -92,7 +95,7 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
       {overall.warnings.length > 0 && (
         <div className="card border-l-4 border-red-500 bg-red-50 shadow-lg">
           <div className="flex items-start gap-3">
-            <div className="text-3xl">⚠️</div>
+            <AlertTriangle className="w-8 h-8 text-red-500" />
             <div className="flex-1">
               <h3 className="text-xl font-bold text-red-900 mb-3">Warnings & Challenges</h3>
               <ul className="space-y-2">
@@ -130,7 +133,9 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
 
       {/* Cook Scale Legend */}
       <div className="card bg-gray-50">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">📊 Cook Scale Guide</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <BarChart3 className="w-5 h-5" /> Cook Scale Guide
+        </h3>
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <div className="w-16 text-center font-bold text-sm text-gray-700">0-20</div>

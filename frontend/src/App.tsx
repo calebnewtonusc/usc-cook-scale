@@ -1,18 +1,23 @@
 import { useState } from 'react';
+import { Loader2, XCircle } from 'lucide-react';
 import LandingPage from './components/LandingPage';
 import UploadSchedule from './components/UploadSchedule';
 import CookScoreDisplayV2 from './components/CookScoreDisplayV2';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
 import type { ClassInput, AnalysisResultV2 } from './types';
 import { analyzeScheduleV2 } from './services/api';
 
+type PageView = 'landing' | 'app' | 'privacy' | 'terms';
+
 function App() {
-  const [showLanding, setShowLanding] = useState(true);
+  const [currentPage, setCurrentPage] = useState<PageView>('landing');
   const [result, setResult] = useState<AnalysisResultV2 | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleStart = () => {
-    setShowLanding(false);
+    setCurrentPage('app');
   };
 
   const handleAnalyze = async (classes: ClassInput[]) => {
@@ -32,18 +37,34 @@ function App() {
   const handleReset = () => {
     setResult(null);
     setError(null);
-    setShowLanding(false);
+    setCurrentPage('app');
   };
 
   const handleBackToHome = () => {
     setResult(null);
     setError(null);
-    setShowLanding(true);
+    setCurrentPage('landing');
   };
 
+  // Show privacy policy
+  if (currentPage === 'privacy') {
+    return <PrivacyPolicy onBack={handleBackToHome} />;
+  }
+
+  // Show terms of service
+  if (currentPage === 'terms') {
+    return <TermsOfService onBack={handleBackToHome} />;
+  }
+
   // Show landing page
-  if (showLanding) {
-    return <LandingPage onStart={handleStart} />;
+  if (currentPage === 'landing') {
+    return (
+      <LandingPage
+        onStart={handleStart}
+        onPrivacy={() => setCurrentPage('privacy')}
+        onTerms={() => setCurrentPage('terms')}
+      />
+    );
   }
 
   // Show main app
@@ -78,7 +99,9 @@ function App() {
         {/* Loading State */}
         {loading && (
           <div className="card text-center py-12">
-            <div className="animate-bounce text-6xl mb-4">🔥</div>
+            <div className="mb-4 flex justify-center">
+              <Loader2 className="w-16 h-16 text-cook-red animate-spin" />
+            </div>
             <p className="text-xl font-medium text-cook-red">
               Analyzing Your Schedule with AI...
             </p>
@@ -99,7 +122,9 @@ function App() {
         {error && !loading && (
           <div className="card bg-red-50 border-2 border-red-300">
             <div className="text-center">
-              <div className="text-5xl mb-4">❌</div>
+              <div className="mb-4 flex justify-center">
+                <XCircle className="w-16 h-16 text-red-500" />
+              </div>
               <h3 className="text-xl font-bold text-red-800 mb-2">
                 Error Analyzing Schedule
               </h3>
@@ -157,6 +182,17 @@ function App() {
             <p className="mt-1">
               Made for USC students 🎓
             </p>
+          </div>
+          <div className="mt-4 text-xs text-gray-500 max-w-3xl mx-auto px-4">
+            <p className="mb-2">
+              <strong>Disclaimer:</strong> Independent student project. Not affiliated with USC, RateMyProfessors, or Reddit.
+              All scores are subjective algorithmic estimates for educational purposes only. Data may be incomplete or outdated.
+            </p>
+            <div className="space-x-4">
+              <button onClick={() => setCurrentPage('privacy')} className="hover:text-cook-red transition-colors">Privacy Policy</button>
+              <span>•</span>
+              <button onClick={() => setCurrentPage('terms')} className="hover:text-cook-red transition-colors">Terms of Service</button>
+            </div>
           </div>
         </footer>
       </div>

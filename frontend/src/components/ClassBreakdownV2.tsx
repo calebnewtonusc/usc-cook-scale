@@ -1,3 +1,4 @@
+import { BookOpen, AlertTriangle, Bot, Star, Flame, BarChart3 } from 'lucide-react';
 import type { ClassAnalysis } from '../types';
 
 interface ClassBreakdownV2Props {
@@ -7,8 +8,8 @@ interface ClassBreakdownV2Props {
 export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
   return (
     <div className="space-y-8">
-      <h3 className="text-3xl font-bold text-gray-900 mb-6">
-        📚 Class-by-Class Breakdown
+      <h3 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <BookOpen className="w-8 h-8" /> Class-by-Class Breakdown
       </h3>
 
       {classes.map((cls, index) => (
@@ -47,7 +48,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {cls.errors && cls.errors.length > 0 && (
             <div className="mb-4 p-3 bg-yellow-50 rounded-lg border-2 border-yellow-300">
               <div className="flex items-start gap-2">
-                <span className="text-lg">⚠️</span>
+                <AlertTriangle className="w-5 h-5 text-yellow-600" />
                 <div className="flex-1">
                   <p className="text-xs font-bold text-yellow-900 mb-1">Data Limitations</p>
                   <ul className="text-xs text-yellow-800 space-y-0.5">
@@ -63,7 +64,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {/* AI Insights */}
           <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
             <div className="flex items-start gap-3">
-              <div className="text-2xl">🤖</div>
+              <Bot className="w-6 h-6 text-purple-500" />
               <div className="flex-1">
                 <p className="text-sm font-bold text-purple-900 mb-1">AI Analysis</p>
                 <p className="text-sm text-gray-800 leading-relaxed">{cls.aiInsights}</p>
@@ -75,7 +76,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {cls.professorMatch && cls.professorMatch.numRatings > 0 && (
             <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xl">⭐</span>
+                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                 <p className="text-sm font-bold text-blue-900">
                   Professor Ratings ({cls.professorMatch.numRatings} reviews)
                 </p>
@@ -127,7 +128,9 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                         <div className="flex items-center gap-3 text-xs text-gray-500">
                           {review.course && <span>📖 {review.course}</span>}
                           {review.difficulty > 0 && (
-                            <span>⚠️ Difficulty: {review.difficulty.toFixed(1)}/5</span>
+                            <span className="flex items-center gap-1">
+                              <AlertTriangle className="w-3 h-3" /> Difficulty: {review.difficulty.toFixed(1)}/5
+                            </span>
                           )}
                           {review.tags.length > 0 && (
                             <div className="flex gap-1 flex-wrap">
@@ -159,7 +162,7 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
           {cls.redditQuotes.length > 0 && (
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xl">🔥</span>
+                <Flame className="w-5 h-5 text-red-500" />
                 <p className="text-sm font-bold text-gray-900">
                   r/USC Discussions
                 </p>
@@ -239,7 +242,9 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 rel="noopener noreferrer"
                 className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg font-medium transition-colors"
               >
-                📊 RateMyProfessors
+                <span className="flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4" /> RateMyProfessors
+                </span>
               </a>
               <a
                 href={cls.redditSearchLink}

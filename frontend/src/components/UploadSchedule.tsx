@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { Flame, FileUp, CheckCircle2, Loader2 } from 'lucide-react';
 import type { ClassInput } from '../types';
 import { parseAnyFile } from '../services/parsers';
 import ManualEntry from './ManualEntry';
@@ -98,13 +99,17 @@ export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
               <input {...fileDropzone.getInputProps()} />
               {loading ? (
                 <div className="text-cook-red">
-                  <div className="animate-spin text-4xl mb-2">🔥</div>
+                  <div className="mb-2 flex justify-center">
+                    <Loader2 className="w-12 h-12 animate-spin" />
+                  </div>
                   <p className="font-medium">AI is reading your file...</p>
                   <p className="text-sm text-gray-600 mt-2">This may take a moment</p>
                 </div>
               ) : (
                 <>
-                  <div className="text-5xl mb-4">📁</div>
+                  <div className="mb-4 flex justify-center">
+                    <FileUp className="w-16 h-16 text-gray-400" />
+                  </div>
                   <p className="text-lg font-medium mb-2">
                     {fileDropzone.isDragActive
                       ? 'Drop your file here!'
@@ -112,8 +117,12 @@ export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
                   </p>
                   <p className="text-gray-600 mb-4">or click to browse</p>
                   <div className="text-sm text-gray-500 space-y-1">
-                    <p>✅ PDF, Image (PNG/JPG), Text, ICS/Calendar</p>
-                    <p className="font-medium text-cook-red">Our AI can read anything! 🔥</p>
+                    <p className="flex items-center justify-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-500" /> PDF, Image (PNG/JPG), Text, ICS/Calendar
+                    </p>
+                    <p className="font-medium text-cook-red flex items-center justify-center gap-2">
+                      Our AI can read anything! <Flame className="w-4 h-4" />
+                    </p>
                   </div>
                 </>
               )}

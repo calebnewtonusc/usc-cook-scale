@@ -1,3 +1,4 @@
+import { AlertTriangle, Save } from 'lucide-react';
 import type { AnalysisResultV2 } from '../types';
 import OverallScoreDisplayV2 from './OverallScoreDisplayV2';
 import ClassBreakdownV2 from './ClassBreakdownV2';
@@ -30,9 +31,9 @@ export default function CookScoreDisplayV2({ result, onReset }: CookScoreDisplay
           </button>
           <button
             onClick={() => window.print()}
-            className="bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+            className="bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
           >
-            💾 Save Results (Print)
+            <Save className="w-5 h-5" /> Save Results (Print)
           </button>
         </div>
       </div>
@@ -40,7 +41,7 @@ export default function CookScoreDisplayV2({ result, onReset }: CookScoreDisplay
       {/* Disclaimer */}
       <div className="card bg-yellow-50 border-2 border-yellow-300">
         <div className="flex items-start gap-3">
-          <span className="text-2xl">⚠️</span>
+          <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
           <div className="flex-1">
             <h4 className="font-bold text-gray-900 mb-2">Important Disclaimer</h4>
             <p className="text-sm text-gray-700 leading-relaxed">

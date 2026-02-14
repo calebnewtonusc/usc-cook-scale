@@ -1,3 +1,4 @@
+import { BookOpen, Settings, AlertTriangle } from 'lucide-react';
 import type { ClassScore } from '../types';
 
 interface ClassBreakdownProps {
@@ -7,8 +8,8 @@ interface ClassBreakdownProps {
 export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
   return (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-gray-800 mb-4">
-        📚 Class-by-Class Analysis
+      <h3 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <BookOpen className="w-7 h-7" /> Class-by-Class Analysis
       </h3>
 
       {classes.map((cls, index) => (
@@ -16,8 +17,8 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
           {/* Header */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
-              <h4 className="text-2xl font-bold text-gray-900 mb-1">
-                {cls.type === 'STEM' ? '⚙️' : '📚'} {cls.courseName}
+              <h4 className="text-2xl font-bold text-gray-900 mb-1 flex items-center gap-2">
+                {cls.type === 'STEM' ? <Settings className="w-6 h-6" /> : <BookOpen className="w-6 h-6" />} {cls.courseName}
               </h4>
               <p className="text-lg text-gray-700">
                 👨‍🏫 Prof. {cls.professor}
@@ -189,7 +190,9 @@ export default function ClassBreakdown({ classes }: ClassBreakdownProps) {
                 <li>STEM class: Focus on problem-solving and practice sets</li>
               )}
               {cls.professorRating && cls.professorRating.difficulty > 4 && (
-                <li>⚠️ Professor rated very difficult—prepare accordingly!</li>
+                <li className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" /> Professor rated very difficult—prepare accordingly!
+                </li>
               )}
             </ul>
           </div>
