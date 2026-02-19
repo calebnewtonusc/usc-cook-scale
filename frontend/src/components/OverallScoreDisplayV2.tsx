@@ -79,8 +79,8 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
             <div className="flex-1">
               <h3 className="text-xl font-bold text-gray-900 mb-3">Key Insights</h3>
               <ul className="space-y-2">
-                {overall.insights.map((insight, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
+                {overall.insights.map((insight) => (
+                  <li key={insight} className="flex items-start gap-2">
                     <span className="text-blue-600 mt-1">•</span>
                     <span className="text-sm text-gray-700 leading-relaxed flex-1">{insight}</span>
                   </li>
@@ -99,8 +99,8 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
             <div className="flex-1">
               <h3 className="text-xl font-bold text-red-900 mb-3">Warnings & Challenges</h3>
               <ul className="space-y-2">
-                {overall.warnings.map((warning, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
+                {overall.warnings.map((warning) => (
+                  <li key={warning} className="flex items-start gap-2">
                     <span className="text-red-600 mt-1">▸</span>
                     <span className="text-sm text-red-800 leading-relaxed flex-1 font-medium">{warning}</span>
                   </li>
@@ -119,8 +119,8 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
             <div className="flex-1">
               <h3 className="text-xl font-bold text-green-900 mb-3">Strengths & Opportunities</h3>
               <ul className="space-y-2">
-                {overall.strengths.map((strength, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
+                {overall.strengths.map((strength) => (
+                  <li key={strength} className="flex items-start gap-2">
                     <span className="text-green-600 mt-1">✓</span>
                     <span className="text-sm text-green-800 leading-relaxed flex-1 font-medium">{strength}</span>
                   </li>

@@ -12,8 +12,8 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
         <BookOpen className="w-8 h-8" /> Class-by-Class Breakdown
       </h3>
 
-      {classes.map((cls, index) => (
-        <div key={index} className="card border-l-4 shadow-xl" style={{
+      {classes.map((cls) => (
+        <div key={`${cls.courseName}-${cls.professor}`} className="card border-l-4 shadow-xl" style={{
           borderLeftColor: cls.finalScore > 70 ? '#DC2626' : cls.finalScore > 50 ? '#F59E0B' : '#10B981'
         }}>
 
@@ -52,8 +52,8 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 <div className="flex-1">
                   <p className="text-xs font-bold text-yellow-900 mb-1">Data Limitations</p>
                   <ul className="text-xs text-yellow-800 space-y-0.5">
-                    {cls.errors.map((error, idx) => (
-                      <li key={idx}>• {error}</li>
+                    {cls.errors.map((error) => (
+                      <li key={error}>• {error}</li>
                     ))}
                   </ul>
                 </div>
@@ -114,8 +114,8 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 </p>
               </div>
               <div className="space-y-3">
-                {cls.rmpQuotes.slice(0, 3).map((review, idx) => (
-                  <div key={idx} className="bg-white border-l-4 border-blue-400 p-4 rounded-r-lg shadow-sm">
+                {cls.rmpQuotes.slice(0, 3).map((review) => (
+                  <div key={`${review.date}-${review.course}`} className="bg-white border-l-4 border-blue-400 p-4 rounded-r-lg shadow-sm">
                     <div className="flex items-start gap-3">
                       <div className="flex flex-col items-center">
                         <div className="text-lg font-bold text-blue-600">{review.rating.toFixed(1)}</div>
@@ -134,8 +134,8 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                           )}
                           {review.tags.length > 0 && (
                             <div className="flex gap-1 flex-wrap">
-                              {review.tags.slice(0, 3).map((tag, i) => (
-                                <span key={i} className="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
+                              {review.tags.slice(0, 3).map((tag) => (
+                                <span key={tag} className="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
                                   {tag}
                                 </span>
                               ))}
@@ -168,8 +168,8 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
                 </p>
               </div>
               <div className="space-y-3">
-                {cls.redditQuotes.slice(0, 2).map((quote, idx) => (
-                  <div key={idx} className="bg-white border-l-4 border-orange-400 p-4 rounded-r-lg shadow-sm">
+                {cls.redditQuotes.slice(0, 2).map((quote) => (
+                  <div key={quote.url} className="bg-white border-l-4 border-orange-400 p-4 rounded-r-lg shadow-sm">
                     <div className="flex items-start gap-3">
                       <div className="flex flex-col items-center">
                         <div className="text-lg font-bold text-orange-600">⬆️ {quote.upvotes}</div>
@@ -212,8 +212,8 @@ export default function ClassBreakdownV2({ classes }: ClassBreakdownV2Props) {
               <p className="text-base font-bold text-green-900">Survival Tips</p>
             </div>
             <ul className="space-y-2">
-              {cls.survivalTips.map((tip, idx) => (
-                <li key={idx} className="flex items-start gap-3">
+              {cls.survivalTips.map((tip) => (
+                <li key={tip} className="flex items-start gap-3">
                   <span className="text-green-600 mt-0.5">✓</span>
                   <span className="text-sm text-gray-800 leading-relaxed flex-1">{tip}</span>
                 </li>

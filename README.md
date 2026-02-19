@@ -4,6 +4,17 @@
 
 AI-powered class difficulty analyzer that combines RateMyProfessors data with intelligent course classification to give you a "Cooked Scale" score from 0-100.
 
+## ⚠️ IMPORTANT DISCLAIMERS
+
+**This is an independent student project created for educational purposes.**
+
+- **NOT AFFILIATED:** This project is not affiliated with, endorsed by, or connected to the University of Southern California (USC), RateMyProfessors, Reddit, or any other institution or service.
+- **EDUCATIONAL PURPOSE:** Created as a student learning project for educational and informational purposes only.
+- **SUBJECTIVE ESTIMATES:** All difficulty scores are subjective algorithmic estimates and should not be considered definitive or official assessments.
+- **DATA ACCURACY:** Data may be incomplete, outdated, or incorrect. Always verify information with official university sources.
+- **USC TRADEMARK:** "USC" and "University of Southern California" are trademarks of the University of Southern California. Use of these terms is solely for descriptive purposes.
+- **NO GUARANTEES:** This is a student project with limited resources. We make no guarantees about accuracy, availability, or reliability.
+
 ## 🚀 Live App
 
 **Try it now:** [https://usc-cook-scale.vercel.app/](https://usc-cook-scale.vercel.app/)
@@ -62,11 +73,12 @@ AI-powered class difficulty analyzer that combines RateMyProfessors data with in
 - **Plain text** or ANY file format
 - Intelligent parsing extracts course info from any format
 
-### 🧪 **Extensively Tested**
-- **46 automated tests** with **98% pass rate**
-- Performance optimized (1.8s for 3 classes)
-- Security tested (SQL injection, XSS protection)
+### 🧪 **Thoroughly Tested**
+- **Comprehensive API validation** ensuring reliable endpoint functionality
+- Performance optimized (typically 1.8s for 3 classes)
+- Basic security measures (SQL injection, XSS protection)
 - Full test report: [COMPREHENSIVE-TEST-REPORT.md](./COMPREHENSIVE-TEST-REPORT.md)
+- **Note:** As a student project, testing is best-effort and not production-grade
 
 ## Tech Stack
 
@@ -308,12 +320,32 @@ Parses schedule text (from PDF) into structured data.
 }
 ```
 
-## Known Limitations
+## Known Limitations & Warnings
 
-- RateMyProfessors scraping may be rate-limited or blocked
-- PDF parsing accuracy depends on PDF format
-- USC-only for now (hardcoded school ID)
-- No user accounts or saved schedules in V1
+### Data & Accuracy
+- **Subjective scores:** All difficulty ratings are algorithmic estimates, not definitive assessments
+- **Data may be incomplete or outdated:** Third-party data sources may have missing, incorrect, or old information
+- **No official verification:** We cannot verify the accuracy of scraped data from RateMyProfessors, Reddit, etc.
+- **Professor matching:** Name matching is best-effort and may occasionally be incorrect
+
+### Technical Limitations
+- **RateMyProfessors rate limiting:** Scraping may be rate-limited or blocked during heavy usage
+- **PDF parsing:** Accuracy depends on PDF format; some formats may not parse correctly
+- **No rate limiting protection:** Currently lacks comprehensive rate limiting (see Security Warnings below)
+- **USC-only:** Hardcoded for USC (school ID: 1381); not compatible with other universities
+- **No user accounts:** No saved schedules or historical data in current version
+- **Student project resources:** Limited server resources, no SLA or uptime guarantees
+
+### Security Warnings
+
+⚠️ **IMPORTANT:** This is a student project with basic security measures but not production-grade security:
+
+1. **No rate limiting implemented:** Currently vulnerable to abuse. Excessive requests may overwhelm the API.
+2. **API key exposure risk:** Backend relies on Anthropic API keys. Protect your `.env` files.
+3. **Third-party dependencies:** Security depends on external services (RateMyProfessors, Reddit, Claude AI)
+4. **Limited monitoring:** No comprehensive logging or abuse detection systems
+
+**If deploying publicly, implement rate limiting immediately.** See [RATE_LIMITING.md](./RATE_LIMITING.md) for setup instructions.
 
 ## Future Enhancements
 
@@ -324,14 +356,31 @@ Parses schedule text (from PDF) into structured data.
 - [ ] Multi-university support
 - [ ] Historical grade data integration
 
+## Legal Pages
+
+- [Privacy Policy](/frontend/src/components/PrivacyPolicy.tsx)
+- [Terms of Service](/frontend/src/components/TermsOfService.tsx)
+
 ## Contributing
 
-This is a student project! Contributions welcome.
+This is a student project! Contributions welcome. However, please note this is primarily an educational project and may not be actively maintained.
 
 ## License
 
-MIT
+MIT License - See LICENSE file for details
+
+## Disclaimer (Repeated for Emphasis)
+
+**This is an independent student project.** We are not affiliated with, endorsed by, or connected to:
+- University of Southern California (USC)
+- RateMyProfessors
+- Reddit
+- Any other institution or service mentioned
+
+All information is provided "AS IS" for educational purposes only. No warranties or guarantees are made regarding accuracy, completeness, or reliability. Always verify information with official university sources before making academic decisions.
+
+"USC" and "University of Southern California" are trademarks of the University of Southern California.
 
 ---
 
-Made with 🔥 for USC students
+Made with 🔥 for USC students by [Caleb Newton](https://calebnewton.me) - A Student Learning Project

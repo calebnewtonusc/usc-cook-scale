@@ -135,11 +135,3 @@ async function extractICSText(file: File): Promise<string> {
   return scheduleText;
 }
 
-// Legacy functions (keep for backward compatibility)
-export async function parsePDF(file: File): Promise<ClassInput[]> {
-  return parseAnyFile(file);
-}
-
-export async function parseICS(file: File): Promise<ClassInput[]> {
-  return parseAnyFile(file);
-}

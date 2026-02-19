@@ -62,10 +62,11 @@ WRIT 150 - Writing - Johnson - 4 units`;
 
       {/* Text Area */}
       <div>
-        <label className="block text-sm font-medium mb-2 text-gray-700">
+        <label htmlFor="schedule-input" className="block text-sm font-medium mb-2 text-gray-700">
           Paste or type your schedule:
         </label>
         <textarea
+          id="schedule-input"
           className="input-field min-h-[200px] font-mono text-sm"
           placeholder={exampleText}
           value={scheduleText}

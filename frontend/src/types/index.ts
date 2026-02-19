@@ -5,13 +5,6 @@ export interface ClassInput {
   type?: 'STEM' | 'HUMANITIES';
 }
 
-export interface ProfessorRating {
-  quality: number;
-  difficulty: number;
-  wouldTakeAgain: number;
-  numRatings: number;
-}
-
 export interface ProfessorMatch {
   id: string;
   name: string;
@@ -39,19 +32,6 @@ export interface RedditQuote {
   author: string;
 }
 
-export interface ClassScore {
-  courseName: string;
-  professor: string;
-  units: number;
-  type?: 'STEM' | 'HUMANITIES';
-  professorRating?: ProfessorRating | null;
-  score: number;
-  explanation: string;
-  rmpLink?: string;
-  redditSearchLink?: string;
-  courseSearchLink?: string;
-}
-
 export interface ClassAnalysis {
   courseName: string;
   professor: string;
@@ -77,13 +57,6 @@ export interface OverallAnalysis {
   insights: string[];
   warnings: string[];
   strengths: string[];
-}
-
-export interface AnalysisResult {
-  overallScore: number;
-  verbalLabel: string;
-  classes: ClassScore[];
-  totalUnits: number;
 }
 
 export interface AnalysisResultV2 {
