@@ -1,40 +1,104 @@
-import { Flame, Skull, Circle, CircleDot, Disc } from 'lucide-react';
+const levels = [
+  {
+    range: '0–20',
+    label: 'Raw',
+    emoji: '😎',
+    desc: 'Light semester, minimal stress. Go touch grass.',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-300',
+    text: 'text-emerald-800',
+    bar: 'bg-emerald-400',
+    width: 'w-[20%]',
+  },
+  {
+    range: '21–35',
+    label: 'Lightly Toasted',
+    emoji: '🌡️',
+    desc: 'Manageable with good study habits.',
+    bg: 'bg-lime-50',
+    border: 'border-lime-300',
+    text: 'text-lime-800',
+    bar: 'bg-lime-400',
+    width: 'w-[35%]',
+  },
+  {
+    range: '36–50',
+    label: 'Medium',
+    emoji: '🔥',
+    desc: 'Standard USC workload. You signed up for this.',
+    bg: 'bg-amber-50',
+    border: 'border-amber-300',
+    text: 'text-amber-800',
+    bar: 'bg-amber-400',
+    width: 'w-[50%]',
+  },
+  {
+    range: '51–65',
+    label: 'Well Done',
+    emoji: '🔥🔥',
+    desc: 'Challenging but doable. Start early, stay consistent.',
+    bg: 'bg-orange-50',
+    border: 'border-orange-300',
+    text: 'text-orange-800',
+    bar: 'bg-orange-400',
+    width: 'w-[65%]',
+  },
+  {
+    range: '66–80',
+    label: 'Extra Crispy',
+    emoji: '🔥🔥🔥',
+    desc: 'Very demanding. Plan every single week.',
+    bg: 'bg-red-50',
+    border: 'border-red-300',
+    text: 'text-red-800',
+    bar: 'bg-red-400',
+    width: 'w-[80%]',
+  },
+  {
+    range: '81–100',
+    label: 'Absolutely Cooked',
+    emoji: '💀',
+    desc: 'Pray. Also: RateMyProfessors is your best friend now.',
+    bg: 'bg-rose-50',
+    border: 'border-rose-400',
+    text: 'text-rose-900',
+    bar: 'bg-rose-600',
+    width: 'w-full',
+  },
+];
 
 export default function CookScaleLegend() {
   return (
-    <div className="card bg-gradient-to-r from-blue-50 to-red-50 mb-16">
-      <h2 className="text-3xl font-bold text-center mb-6">The Cooked Scale</h2>
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="bg-blue-100 p-4 rounded-lg border-2 border-blue-300">
-          <div className="mb-2"><Circle className="w-12 h-12 text-green-600 mx-auto" strokeWidth={3} /></div>
-          <div className="font-bold text-lg mb-1">0-20: Raw</div>
-          <p className="text-sm">Easy semester, manageable workload</p>
-        </div>
-        <div className="bg-green-100 p-4 rounded-lg border-2 border-green-300">
-          <div className="mb-2"><CircleDot className="w-12 h-12 text-yellow-600 mx-auto" strokeWidth={3} /></div>
-          <div className="font-bold text-lg mb-1">21-35: Lightly Toasted</div>
-          <p className="text-sm">Some challenges but doable</p>
-        </div>
-        <div className="bg-yellow-100 p-4 rounded-lg border-2 border-yellow-300">
-          <div className="mb-2"><Disc className="w-12 h-12 text-orange-500 mx-auto" strokeWidth={2} /></div>
-          <div className="font-bold text-lg mb-1">36-50: Medium</div>
-          <p className="text-sm">Moderate difficulty, balanced</p>
-        </div>
-        <div className="bg-orange-100 p-4 rounded-lg border-2 border-orange-300">
-          <div className="mb-2"><Disc className="w-12 h-12 text-red-500 mx-auto fill-current" /></div>
-          <div className="font-bold text-lg mb-1">51-65: Well Done</div>
-          <p className="text-sm">Challenging semester ahead</p>
-        </div>
-        <div className="bg-red-100 p-4 rounded-lg border-2 border-red-300">
-          <div className="mb-2"><Flame className="w-12 h-12 text-cook-red mx-auto" /></div>
-          <div className="font-bold text-lg mb-1">66-80: Extra Crispy</div>
-          <p className="text-sm">Very difficult, plan accordingly</p>
-        </div>
-        <div className="bg-red-200 p-4 rounded-lg border-2 border-red-500">
-          <div className="mb-2"><Skull className="w-12 h-12 text-gray-800 mx-auto" /></div>
-          <div className="font-bold text-lg mb-1">81-100: Absolutely Burnt</div>
-          <p className="text-sm">Extremely hard—good luck!</p>
-        </div>
+    <div className="mb-16">
+      <div className="text-center mb-8">
+        <h2 className="section-title">The Cooked Scale</h2>
+        <p className="section-subtitle">From "Chill" to "Send Help" — where does your schedule land?</p>
+      </div>
+
+      <div className="space-y-3">
+        {levels.map(({ range, label, emoji, desc, bg, border, text, bar, width }) => (
+          <div
+            key={range}
+            className={`${bg} border ${border} rounded-2xl p-4 flex items-center gap-4 hover:shadow-sm transition-shadow duration-200`}
+          >
+            {/* Range label */}
+            <div className={`text-xs font-black ${text} w-14 text-center flex-shrink-0`}>{range}</div>
+
+            {/* Progress bar */}
+            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+              <div className={`h-full ${bar} rounded-full ${width}`} />
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{emoji}</span>
+                <span className={`font-black text-base ${text}`}>{label}</span>
+              </div>
+              <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

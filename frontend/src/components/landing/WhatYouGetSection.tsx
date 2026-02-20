@@ -1,74 +1,77 @@
-import { Flame, Users, BarChart3, Lightbulb, Link, Circle, Skull } from 'lucide-react';
+import { Flame, Users, BarChart3, Lightbulb, ExternalLink, Trophy } from 'lucide-react';
+
+const features = [
+  {
+    icon: <Flame className="w-6 h-6" />,
+    title: 'Overall Cook Scale Score',
+    description: 'Your semester difficulty rated 0–100 with a verbal label from "Raw" to "Absolutely Cooked"',
+    bg: 'bg-red-50',
+    iconBg: 'bg-cook-red text-white',
+    border: 'border-red-100',
+  },
+  {
+    icon: <Users className="w-6 h-6" />,
+    title: 'Professor Deep Dive',
+    description: 'Real RMP ratings, actual student quotes, Reddit threads, and direct links to all sources',
+    bg: 'bg-amber-50',
+    iconBg: 'bg-amber-500 text-white',
+    border: 'border-amber-100',
+  },
+  {
+    icon: <BarChart3 className="w-6 h-6" />,
+    title: 'Per-Class Breakdown',
+    description: 'Individual difficulty scores with star ratings, trend indicators, and color-coded difficulty badges',
+    bg: 'bg-blue-50',
+    iconBg: 'bg-blue-600 text-white',
+    border: 'border-blue-100',
+  },
+  {
+    icon: <Lightbulb className="w-6 h-6" />,
+    title: 'Survival Tips',
+    description: 'AI-generated tips specific to each professor and course based on real student feedback',
+    bg: 'bg-emerald-50',
+    iconBg: 'bg-emerald-600 text-white',
+    border: 'border-emerald-100',
+  },
+  {
+    icon: <Trophy className="w-6 h-6" />,
+    title: 'Schedule Strengths',
+    description: 'What\'s working in your favor — silver linings and opportunities in your course selection',
+    bg: 'bg-purple-50',
+    iconBg: 'bg-purple-600 text-white',
+    border: 'border-purple-100',
+  },
+  {
+    icon: <ExternalLink className="w-6 h-6" />,
+    title: 'Source Links',
+    description: 'Direct links to RateMyProfessors pages, Reddit discussions, and Google searches for every class',
+    bg: 'bg-gray-50',
+    iconBg: 'bg-gray-600 text-white',
+    border: 'border-gray-100',
+  },
+];
 
 export default function WhatYouGetSection() {
   return (
-    <div className="card bg-white/80 backdrop-blur mb-16">
-      <h2 className="text-3xl font-bold text-center mb-6">What You'll Get</h2>
-      <div className="space-y-4">
-        <div className="border-l-4 border-cook-red p-4 bg-red-50">
-          <div className="flex items-start gap-3">
-            <Flame className="w-8 h-8 text-cook-red flex-shrink-0" />
-            <div className="flex-1">
-              <h3 className="font-bold mb-1">Overall Cook Scale Score</h3>
-              <p className="text-sm text-gray-700">
-                Your semester difficulty rated 0-100 with verbal label
-                (Raw <Circle className="inline w-4 h-4" /> → Absolutely Burnt <Skull className="inline w-4 h-4" />)
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="mb-16">
+      <div className="text-center mb-8">
+        <h2 className="section-title">What You'll Get</h2>
+        <p className="section-subtitle">Comprehensive schedule intelligence, not just a number</p>
+      </div>
 
-        <div className="border-l-4 border-yellow-500 p-4 bg-yellow-50">
-          <div className="flex items-start gap-3">
-            <Users className="w-8 h-8 text-yellow-600 flex-shrink-0" />
-            <div className="flex-1">
-              <h3 className="font-bold mb-1">Professor Deep Dive</h3>
-              <p className="text-sm text-gray-700">
-                Real ratings, actual student quotes, Reddit threads, and
-                direct links to all sources
-              </p>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {features.map(({ icon, title, description, bg, iconBg, border }) => (
+          <div
+            key={title}
+            className={`${bg} border ${border} rounded-2xl p-5 hover:shadow-card-hover transition-all duration-200`}
+          >
+            <div className={`inline-flex items-center justify-center w-11 h-11 rounded-xl mb-3 ${iconBg}`}>
+              {icon}
             </div>
+            <h3 className="font-black text-gray-900 mb-1.5 text-base">{title}</h3>
+            <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
           </div>
-        </div>
-
-        <div className="border-l-4 border-blue-500 p-4 bg-blue-50">
-          <div className="flex items-start gap-3">
-            <BarChart3 className="w-8 h-8 text-blue-600 flex-shrink-0" />
-            <div className="flex-1">
-              <h3 className="font-bold mb-1">Per-Class Breakdown</h3>
-              <p className="text-sm text-gray-700">
-                Individual difficulty scores with explanations, workload estimates,
-                and survival tips
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-l-4 border-green-500 p-4 bg-green-50">
-          <div className="flex items-start gap-3">
-            <Lightbulb className="w-8 h-8 text-green-600 flex-shrink-0" />
-            <div className="flex-1">
-              <h3 className="font-bold mb-1">Smart Recommendations</h3>
-              <p className="text-sm text-gray-700">
-                Schedule optimization tips, workload balance advice, and time
-                management strategies
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-l-4 border-purple-500 p-4 bg-purple-50">
-          <div className="flex items-start gap-3">
-            <Link className="w-8 h-8 text-purple-600 flex-shrink-0" />
-            <div className="flex-1">
-              <h3 className="font-bold mb-1">Source Links</h3>
-              <p className="text-sm text-gray-700">
-                Direct links to RateMyProfessors pages, Reddit discussions,
-                reviews, and all data sources
-              </p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

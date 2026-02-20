@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Loader2, XCircle, GraduationCap } from 'lucide-react';
+import { AlertCircle, GraduationCap, ArrowLeft, RefreshCw } from 'lucide-react';
 import LandingPage from './components/LandingPage';
 import UploadSchedule from './components/UploadSchedule';
 import CookScoreDisplayV2 from './components/CookScoreDisplayV2';
+import LoadingState from './components/LoadingState';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import type { ClassInput, AnalysisResultV2 } from './types';
@@ -46,17 +47,14 @@ function App() {
     setCurrentPage('landing');
   };
 
-  // Show privacy policy
   if (currentPage === 'privacy') {
     return <PrivacyPolicy onBack={handleBackToHome} />;
   }
 
-  // Show terms of service
   if (currentPage === 'terms') {
     return <TermsOfService onBack={handleBackToHome} />;
   }
 
-  // Show landing page
   if (currentPage === 'landing') {
     return (
       <LandingPage
@@ -67,71 +65,64 @@ function App() {
     );
   }
 
-  // Show main app
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen py-6 px-4">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <header className="text-center mb-8">
+        <header className="mb-8">
           <button
             onClick={handleBackToHome}
-            className="text-gray-600 hover:text-cook-red transition-colors mb-4 text-sm"
+            className="flex items-center gap-1.5 text-gray-500 hover:text-cook-red transition-colors mb-6 text-sm font-medium group"
           >
-            ← Back to Home
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            Back to Home
           </button>
-          <div className="flex items-center justify-center gap-4 mb-2">
+
+          <div className="flex items-center gap-3">
             <img
               src="/logo.png"
               alt="USC Cooked Scale Logo"
-              className="w-12 h-12 md:w-16 md:h-16"
+              className="w-12 h-12 md:w-14 md:h-14 flex-shrink-0"
             />
-            <h1 className="text-4xl md:text-5xl font-black">
-              <span className="bg-gradient-to-r from-cook-red to-cook-yellow bg-clip-text text-transparent">
-                USC Cooked Scale
-              </span>
-            </h1>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-black leading-tight">
+                <span className="text-usc-gradient">
+                  USC Cooked Scale
+                </span>
+              </h1>
+              <p className="text-gray-500 text-sm mt-0.5">
+                AI-powered schedule difficulty analyzer
+              </p>
+            </div>
           </div>
-          <p className="text-lg text-gray-700">
-            How cooked is your schedule?
-          </p>
         </header>
 
         {/* Loading State */}
-        {loading && (
-          <div className="card text-center py-12">
-            <div className="mb-4 flex justify-center">
-              <Loader2 className="w-16 h-16 text-cook-red animate-spin" />
-            </div>
-            <p className="text-xl font-medium text-cook-red">
-              Analyzing Your Schedule with AI...
-            </p>
-            <p className="text-gray-600 mt-2">
-              • Verifying professors on RateMyProfessors<br />
-              • Extracting real student reviews and quotes<br />
-              • Searching Reddit discussions<br />
-              • Calculating intelligent difficulty scores<br />
-              • Generating personalized survival tips
-            </p>
-            <p className="text-sm text-gray-500 mt-4">
-              This may take 15-30 seconds (we're doing a LOT of research!)
-            </p>
-          </div>
-        )}
+        {loading && <LoadingState />}
 
         {/* Error State */}
         {error && !loading && (
-          <div className="card bg-red-50 border-2 border-red-300">
-            <div className="text-center">
-              <div className="mb-4 flex justify-center">
-                <XCircle className="w-16 h-16 text-red-500" />
+          <div className="card border-2 border-red-200 bg-red-50">
+            <div className="text-center py-4">
+              <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <AlertCircle className="w-9 h-9 text-red-500" />
               </div>
-              <h3 className="text-xl font-bold text-red-800 mb-2">
-                Error Analyzing Schedule
+              <h3 className="text-xl font-bold text-red-900 mb-2">
+                Analysis Failed
               </h3>
-              <p className="text-red-700">{error}</p>
-              <button onClick={handleReset} className="btn-primary mt-4">
-                Try Again
-              </button>
+              <p className="text-red-700 mb-2 text-sm max-w-md mx-auto">{error}</p>
+              <p className="text-xs text-red-500 mb-6">
+                This usually happens when the AI service is overloaded. Try again in a few seconds.
+              </p>
+              <div className="flex gap-3 justify-center">
+                <button onClick={handleReset} className="btn-primary flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4" />
+                  Try Again
+                </button>
+                <button onClick={handleBackToHome} className="btn-outline">
+                  Back to Home
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -148,50 +139,49 @@ function App() {
         )}
 
         {/* Footer */}
-        <footer className="mt-12 text-center">
-          <div className="flex flex-col items-center gap-6 mb-6">
-            <a
-              href="https://calebnewton.me"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 px-8 py-6 bg-white/80 backdrop-blur-sm rounded-full border-2 border-cook-red/30 shadow-md hover:shadow-xl hover:-translate-y-0.5 hover:border-cook-red/60 transition-all duration-300 no-underline"
-            >
-              <img
-                src="/caleb-usc.jpg"
-                alt="Caleb Newton at USC"
-                className="w-12 h-12 rounded-full object-cover shadow-lg"
-                style={{
-                  objectPosition: 'center 30%',
-                  border: '2px solid #DC2626'
-                }}
-              />
-              <div className="flex flex-col items-start gap-1">
-                <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
-                  Built by
-                </span>
-                <span className="text-base text-gray-900 font-bold">
-                  Caleb Newton
-                </span>
+        <footer className="mt-12 pb-6">
+          <div className="border-t border-gray-200 pt-8">
+            <div className="flex flex-col items-center gap-4">
+              <a
+                href="https://calebnewton.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 px-6 py-3.5 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-cook-red/40 transition-all duration-200"
+              >
+                <img
+                  src="/caleb-usc.jpg"
+                  alt="Caleb Newton"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-cook-red/30"
+                  style={{ objectPosition: 'center 30%' }}
+                />
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold leading-none mb-0.5">Built by</p>
+                  <p className="text-sm text-gray-900 font-bold leading-none">Caleb Newton</p>
+                </div>
+              </a>
+
+              <div className="text-center text-xs text-gray-500 space-y-1">
+                <p>Powered by Claude AI &bull; Data from RateMyProfessors, Reddit &amp; More</p>
+                <p className="flex items-center gap-1 justify-center">
+                  Made for USC students
+                  <GraduationCap className="inline w-3.5 h-3.5 text-cook-red" />
+                </p>
               </div>
-            </a>
-          </div>
-          <div className="text-sm text-gray-600">
-            <p>
-              Powered by Claude AI • Data from RateMyProfessors, Reddit & More
-            </p>
-            <p className="mt-1">
-              Made for USC students <GraduationCap className="inline w-4 h-4" />
-            </p>
-          </div>
-          <div className="mt-4 text-xs text-gray-500 max-w-3xl mx-auto px-4">
-            <p className="mb-2">
-              <strong>Disclaimer:</strong> Independent student project. Not affiliated with USC, RateMyProfessors, or Reddit.
-              All scores are subjective algorithmic estimates for educational purposes only. Data may be incomplete or outdated.
-            </p>
-            <div className="space-x-4">
-              <button onClick={() => setCurrentPage('privacy')} className="hover:text-cook-red transition-colors">Privacy Policy</button>
-              <span>•</span>
-              <button onClick={() => setCurrentPage('terms')} className="hover:text-cook-red transition-colors">Terms of Service</button>
+
+              <p className="text-[11px] text-gray-400 text-center max-w-2xl leading-relaxed px-4">
+                Independent student project. Not affiliated with USC, RateMyProfessors, or Reddit.
+                All scores are subjective algorithmic estimates for educational purposes only.
+              </p>
+
+              <div className="flex gap-4 text-xs text-gray-400">
+                <button onClick={() => setCurrentPage('privacy')} className="hover:text-cook-red transition-colors">
+                  Privacy Policy
+                </button>
+                <span>&bull;</span>
+                <button onClick={() => setCurrentPage('terms')} className="hover:text-cook-red transition-colors">
+                  Terms of Service
+                </button>
+              </div>
             </div>
           </div>
         </footer>

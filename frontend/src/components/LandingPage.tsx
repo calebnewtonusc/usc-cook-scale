@@ -1,4 +1,4 @@
-import { Rocket } from 'lucide-react';
+import { Flame } from 'lucide-react';
 import HeroSection from './landing/HeroSection';
 import StatsBanner from './landing/StatsBanner';
 import HowItWorksSection from './landing/HowItWorksSection';
@@ -15,26 +15,36 @@ interface LandingPageProps {
 
 export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-red-50">
-      <div className="max-w-6xl mx-auto px-4 py-16">
+    <div className="min-h-screen">
+      {/* Subtle top gradient backdrop */}
+      <div className="fixed inset-0 pointer-events-none" style={{
+        background: 'radial-gradient(ellipse at top, rgba(153, 0, 0, 0.04) 0%, transparent 60%)'
+      }} />
+
+      <div className="relative max-w-4xl mx-auto px-4 py-12 md:py-16">
         <HeroSection onStart={onStart} />
         <StatsBanner />
         <HowItWorksSection />
-        <DataSourcesSection />
         <WhatYouGetSection />
+        <DataSourcesSection />
         <CookScaleLegend />
 
-        {/* CTA */}
-        <div className="text-center mb-12">
+        {/* Final CTA */}
+        <div className="text-center mb-12 py-12 px-6 rounded-3xl bg-gradient-to-br from-cook-red/5 to-cook-yellow/5 border border-cook-red/10">
+          <h2 className="text-3xl font-black text-gray-900 mb-3">
+            Ready to find out the truth?
+          </h2>
+          <p className="text-gray-500 mb-6 text-base">
+            Join USC students who've already checked their schedules
+          </p>
           <button
             onClick={onStart}
-            className="btn-primary text-2xl px-16 py-6 shadow-2xl hover:shadow-cook-red/50 transform hover:scale-105 transition-all inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 btn-primary text-lg px-10 py-4 shadow-usc-lg"
           >
-            Get Started Now <Rocket className="w-6 h-6" />
+            <Flame className="w-5 h-5" />
+            Get My Cook Scale Score
           </button>
-          <p className="text-gray-600 mt-4">
-            Join hundreds of USC students making smarter schedule decisions
-          </p>
+          <p className="text-xs text-gray-400 mt-3">Takes about 15–30 seconds</p>
         </div>
 
         <LandingFooter onPrivacy={onPrivacy} onTerms={onTerms} />
