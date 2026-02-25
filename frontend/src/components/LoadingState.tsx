@@ -166,7 +166,7 @@ export default function LoadingState() {
         {/* Time estimate */}
         <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
           <div className="w-2 h-2 bg-cook-red rounded-full animate-pulse" />
-          <span>This takes 15–30 seconds — we're doing a LOT of research</span>
+          <span>This takes 15-30 seconds. We're doing a LOT of research</span>
         </div>
 
         {/* Meme footer */}

@@ -205,12 +205,12 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {[
-            { range: '0–20', label: 'Raw', desc: 'Smooth sailing', color: 'bg-emerald-100 border-emerald-300 text-emerald-800', active: overall.score <= 20 },
-            { range: '21–35', label: 'Lightly Toasted', desc: 'Manageable', color: 'bg-lime-100 border-lime-300 text-lime-800', active: overall.score > 20 && overall.score <= 35 },
-            { range: '36–50', label: 'Medium', desc: 'Standard USC', color: 'bg-amber-100 border-amber-300 text-amber-800', active: overall.score > 35 && overall.score <= 50 },
-            { range: '51–65', label: 'Well Done', desc: 'Challenging', color: 'bg-orange-100 border-orange-300 text-orange-800', active: overall.score > 50 && overall.score <= 65 },
-            { range: '66–80', label: 'Extra Crispy', desc: 'Very tough', color: 'bg-red-100 border-red-300 text-red-800', active: overall.score > 65 && overall.score <= 80 },
-            { range: '81–100', label: 'Absolutely Burnt', desc: 'Send help', color: 'bg-red-200 border-red-500 text-red-900', active: overall.score > 80 },
+            { range: '0-20', label: 'Raw', desc: 'Smooth sailing', color: 'bg-emerald-100 border-emerald-300 text-emerald-800', active: overall.score <= 20 },
+            { range: '21-35', label: 'Lightly Toasted', desc: 'Manageable', color: 'bg-lime-100 border-lime-300 text-lime-800', active: overall.score > 20 && overall.score <= 35 },
+            { range: '36-50', label: 'Medium', desc: 'Standard USC', color: 'bg-amber-100 border-amber-300 text-amber-800', active: overall.score > 35 && overall.score <= 50 },
+            { range: '51-65', label: 'Well Done', desc: 'Challenging', color: 'bg-orange-100 border-orange-300 text-orange-800', active: overall.score > 50 && overall.score <= 65 },
+            { range: '66-80', label: 'Extra Crispy', desc: 'Very tough', color: 'bg-red-100 border-red-300 text-red-800', active: overall.score > 65 && overall.score <= 80 },
+            { range: '81-100', label: 'Absolutely Burnt', desc: 'Send help', color: 'bg-red-200 border-red-500 text-red-900', active: overall.score > 80 },
           ].map(({ range, label, desc, color, active }) => (
             <div
               key={range}

@@ -239,7 +239,7 @@ export default function UploadSchedule({ onAnalyze }: UploadScheduleProps) {
 
                       <p className="text-xs text-cook-red font-semibold mt-4 flex items-center justify-center gap-1">
                         <Flame className="w-3.5 h-3.5" />
-                        AI reads any format - just drop it!
+                        AI reads any format. Just drop it!
                       </p>
                     </>
                   )}

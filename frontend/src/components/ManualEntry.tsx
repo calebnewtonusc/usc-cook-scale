@@ -72,7 +72,7 @@ Tuesday 2:00-3:20 MATH 225 Lec Prof: John Smith`;
             </div>
             <p className="text-xs text-amber-700 mt-2 flex items-center gap-1">
               <Flame className="w-3.5 h-3.5 text-cook-red flex-shrink-0" />
-              Paste from WeReg, email, or just type it — AI handles any format
+              Paste from WeReg, email, or just type it. AI handles any format
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ Tuesday 2:00-3:20 MATH 225 Lec Prof: John Smith`;
               {scheduleText.length} characters entered
             </span>
           )}
-          {scheduleText.length === 0 && 'Any format works — the AI is smart'}
+          {scheduleText.length === 0 && 'Any format works. The AI is smart'}
         </p>
       </div>
 

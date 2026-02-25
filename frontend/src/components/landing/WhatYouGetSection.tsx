@@ -13,7 +13,7 @@ const features: Feature[] = [
   {
     icon: <Flame style={{ width: 20, height: 20 }} />,
     title: 'Overall Cook Scale Score',
-    description: 'Your semester difficulty rated 0–100 with a verbal label from "Raw" to "Absolutely Cooked"',
+    description: 'Your semester difficulty rated 0-100 with a verbal label from "Raw" to "Absolutely Cooked"',
     iconColor: '#990000',
     iconBg: 'rgba(153,0,0,0.1)',
   },
@@ -41,7 +41,7 @@ const features: Feature[] = [
   {
     icon: <Trophy style={{ width: 20, height: 20 }} />,
     title: 'Schedule Strengths',
-    description: "What's working in your favor — silver linings and opportunities in your course selection",
+    description: "What's working in your favor: silver linings and opportunities in your course selection",
     iconColor: '#6e3bc9',
     iconBg: 'rgba(110,59,201,0.1)',
   },

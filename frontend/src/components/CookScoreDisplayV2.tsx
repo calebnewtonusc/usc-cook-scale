@@ -18,10 +18,10 @@ function SharePanel({ result }: { result: AnalysisResultV2 }) {
   const units = result.totalUnits;
   const url = window.location.origin;
 
-  const shareText = `My USC schedule got a ${score}/100 on the Cooked Scale — "${label}" 🔥\n(${units} units this semester)\n\nCheck yours: ${url}`;
+  const shareText = `My USC schedule got a ${score}/100 on the Cooked Scale: "${label}" 🔥\n(${units} units this semester)\n\nCheck yours: ${url}`;
 
   const tweetText = encodeURIComponent(
-    `My USC schedule got ${score}/100 on the Cooked Scale — "${label}" 🔥\n\nCheck yours: ${url} #USC #Trojans`
+    `My USC schedule got ${score}/100 on the Cooked Scale: "${label}" 🔥\n\nCheck yours: ${url} #USC #Trojans`
   );
 
   const handleCopyLink = async () => {
@@ -75,7 +75,7 @@ function SharePanel({ result }: { result: AnalysisResultV2 }) {
       <div className="bg-white rounded-xl p-3 mb-4 border border-gray-100 shadow-sm">
         <p className="text-xs text-gray-500 mb-1">Your share message:</p>
         <p className="text-sm text-gray-800 font-medium leading-relaxed">
-          My USC schedule got a <span className="text-cook-red font-black">{score}/100</span> on the Cooked Scale — "{label}" 🔥
+          My USC schedule got a <span className="text-cook-red font-black">{score}/100</span> on the Cooked Scale: "{label}" 🔥
           <br />
           <span className="text-gray-500 text-xs">({units} units this semester)</span>
         </p>

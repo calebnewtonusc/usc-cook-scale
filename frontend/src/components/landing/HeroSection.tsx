@@ -250,7 +250,7 @@ export default function HeroSection({ onStart }: HeroSectionProps) {
           }}
         >
           <strong style={{ fontWeight: 600, color: '#7a5a00' }}>Disclaimer: </strong>
-          Independent student project — not affiliated with USC, RateMyProfessors, or Reddit.
+          Independent student project, not affiliated with USC, RateMyProfessors, or Reddit.
           All scores are subjective algorithmic estimates for educational purposes only.
           Data may be incomplete or outdated. Always verify with official university sources.
         </p>

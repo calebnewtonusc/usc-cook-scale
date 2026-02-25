@@ -77,7 +77,7 @@ export default function DataSourcesSection() {
             color: '#8e8e93',
           }}
         >
-          We aggregate actual student experiences — not just vibes
+          We aggregate actual student experiences, not just vibes
         </p>
       </div>
 

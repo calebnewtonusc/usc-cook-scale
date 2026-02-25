@@ -26,7 +26,7 @@ const steps: Step[] = [
     number: '02',
     title: 'AI Deep Research',
     description:
-      'We scan RateMyProfessors, scrub Reddit r/USC, and aggregate thousands of student experiences — all in real time.',
+      'We scan RateMyProfessors, scrub Reddit r/USC, and aggregate thousands of student experiences, all in real time.',
   },
   {
     icon: <Flame style={{ width: 24, height: 24, color: '#ffffff' }} />,

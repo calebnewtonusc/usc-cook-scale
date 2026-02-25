@@ -127,7 +127,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
                 marginTop: 14,
               }}
             >
-              Takes about 15–30 seconds
+              Takes about 15-30 seconds
             </p>
           </div>
         </motion.div>

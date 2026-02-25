@@ -16,7 +16,7 @@ interface Level {
 
 const levels: Level[] = [
   {
-    range: '0–20',
+    range: '0-20',
     label: 'Raw',
     desc: 'Light semester, minimal stress. Go touch grass.',
     color: '#1a7a34',
@@ -25,7 +25,7 @@ const levels: Level[] = [
     widthPct: 20,
   },
   {
-    range: '21–35',
+    range: '21-35',
     label: 'Lightly Toasted',
     desc: 'Manageable with good study habits.',
     color: '#4a8000',
@@ -34,7 +34,7 @@ const levels: Level[] = [
     widthPct: 35,
   },
   {
-    range: '36–50',
+    range: '36-50',
     label: 'Medium',
     desc: 'Standard USC workload. You signed up for this.',
     color: '#a05a00',
@@ -43,7 +43,7 @@ const levels: Level[] = [
     widthPct: 50,
   },
   {
-    range: '51–65',
+    range: '51-65',
     label: 'Well Done',
     desc: 'Challenging but doable. Start early, stay consistent.',
     color: '#c03800',
@@ -52,7 +52,7 @@ const levels: Level[] = [
     widthPct: 65,
   },
   {
-    range: '66–80',
+    range: '66-80',
     label: 'Extra Crispy',
     desc: 'Very demanding. Plan every single week.',
     color: '#cc1500',
@@ -61,7 +61,7 @@ const levels: Level[] = [
     widthPct: 80,
   },
   {
-    range: '81–100',
+    range: '81-100',
     label: 'Absolutely Cooked',
     desc: 'Pray. Also: RateMyProfessors is your best friend now.',
     color: '#990000',
@@ -139,7 +139,7 @@ export default function CookScaleLegend() {
             lineHeight: 1.5,
           }}
         >
-          From "Chill" to "Send Help" — where does your schedule land?
+          From "Chill" to "Send Help": where does your schedule land?
         </p>
       </motion.div>
 
