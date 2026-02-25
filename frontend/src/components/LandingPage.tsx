@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { Flame } from 'lucide-react';
 import HeroSection from './landing/HeroSection';
 import StatsBanner from './landing/StatsBanner';
@@ -6,6 +7,10 @@ import DataSourcesSection from './landing/DataSourcesSection';
 import WhatYouGetSection from './landing/WhatYouGetSection';
 import CookScaleLegend from './landing/CookScaleLegend';
 import LandingFooter from './landing/LandingFooter';
+
+const sfDisplay = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif";
+const sfText = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+const easing = [0.25, 0.46, 0.45, 0.94] as const;
 
 interface LandingPageProps {
   onStart: () => void;
@@ -21,7 +26,7 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
           position: 'relative',
           maxWidth: 896,
           margin: '0 auto',
-          padding: '48px 16px 64px',
+          padding: '0 16px 64px',
         }}
       >
         <HeroSection onStart={onStart} />
@@ -32,87 +37,100 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
         <CookScaleLegend />
 
         {/* Final CTA */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: easing }}
           style={{
             textAlign: 'center',
-            marginBottom: 48,
-            padding: '48px 32px',
+            marginBottom: 56,
+            padding: '56px 40px',
             borderRadius: 24,
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+            background: '#ffffff',
             border: '0.5px solid rgba(60,60,67,0.1)',
-            boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+            boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          <h2
+          {/* Soft red glow */}
+          <div
+            aria-hidden
             style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
-              fontWeight: 800,
-              fontSize: 28,
-              letterSpacing: '-0.4px',
-              color: '#1c1c1e',
-              marginBottom: 10,
+              position: 'absolute',
+              inset: 0,
+              pointerEvents: 'none',
+              background:
+                'radial-gradient(ellipse 70% 60% at 50% 0%, rgba(153,0,0,0.04) 0%, transparent 70%)',
             }}
-          >
-            Ready to find out the truth?
-          </h2>
-          <p
-            style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-              fontSize: 15,
-              color: '#8e8e93',
-              marginBottom: 28,
-            }}
-          >
-            Join USC students who've already checked their schedules
-          </p>
-          <button
-            onClick={onStart}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 10,
-              background: '#990000',
-              color: '#ffffff',
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
-              fontWeight: 700,
-              fontSize: 17,
-              letterSpacing: '-0.2px',
-              padding: '16px 36px',
-              borderRadius: 980,
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.18s ease',
-              boxShadow: '0 2px 12px rgba(153,0,0,0.28)',
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLButtonElement;
-              el.style.background = '#7a0000';
-              el.style.boxShadow = '0 4px 20px rgba(153,0,0,0.35)';
-              el.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLButtonElement;
-              el.style.background = '#990000';
-              el.style.boxShadow = '0 2px 12px rgba(153,0,0,0.28)';
-              el.style.transform = 'translateY(0)';
-            }}
-          >
-            <Flame style={{ width: 20, height: 20 }} />
-            Get My Cook Scale Score
-          </button>
-          <p
-            style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-              fontSize: 12,
-              color: '#8e8e93',
-              marginTop: 12,
-            }}
-          >
-            Takes about 15–30 seconds
-          </p>
-        </div>
+          />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h2
+              style={{
+                fontFamily: sfDisplay,
+                fontWeight: 800,
+                fontSize: 'clamp(28px, 4vw, 38px)',
+                letterSpacing: '-1px',
+                color: '#1c1c1e',
+                marginBottom: 12,
+                lineHeight: 1.1,
+              }}
+            >
+              Ready to find out the truth?
+            </h2>
+            <p
+              style={{
+                fontFamily: sfText,
+                fontSize: 17,
+                color: '#3a3a3c',
+                marginBottom: 32,
+                lineHeight: 1.5,
+              }}
+            >
+              Join USC students who've already checked their schedules
+            </p>
+            <motion.button
+              onClick={onStart}
+              whileHover={{
+                y: -2,
+                boxShadow: '0 8px 32px rgba(153,0,0,0.32)',
+              }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.18, ease: easing }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                background: '#990000',
+                color: '#ffffff',
+                fontFamily: sfDisplay,
+                fontWeight: 700,
+                fontSize: 17,
+                letterSpacing: '-0.2px',
+                height: 56,
+                padding: '0 40px',
+                borderRadius: 980,
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 2px 16px rgba(153,0,0,0.25)',
+              }}
+            >
+              <Flame style={{ width: 20, height: 20 }} />
+              Get My Cook Scale Score
+            </motion.button>
+            <p
+              style={{
+                fontFamily: sfText,
+                fontSize: 13,
+                color: '#8e8e93',
+                marginTop: 14,
+              }}
+            >
+              Takes about 15–30 seconds
+            </p>
+          </div>
+        </motion.div>
 
         <LandingFooter onPrivacy={onPrivacy} onTerms={onTerms} />
       </div>

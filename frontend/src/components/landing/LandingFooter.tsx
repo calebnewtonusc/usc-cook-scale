@@ -1,4 +1,8 @@
-import { GraduationCap, ExternalLink } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ExternalLink } from 'lucide-react';
+
+const sfText = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+const easing = [0.25, 0.46, 0.45, 0.94] as const;
 
 interface LandingFooterProps {
   onPrivacy?: () => void;
@@ -7,66 +11,66 @@ interface LandingFooterProps {
 
 export default function LandingFooter({ onPrivacy, onTerms }: LandingFooterProps) {
   return (
-    <div
+    <motion.footer
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: easing }}
       style={{
+        paddingTop: 32,
+        paddingBottom: 40,
+        borderTop: '0.5px solid rgba(60,60,67,0.12)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 20,
-        paddingTop: 32,
-        borderTop: '0.5px solid rgba(60,60,67,0.12)',
+        gap: 18,
+        textAlign: 'center',
       }}
     >
       {/* Built by pill */}
-      <a
+      <motion.a
         href="https://calebnewton.me"
         target="_blank"
         rel="noopener noreferrer"
+        whileHover={{
+          y: -2,
+          boxShadow: '0 6px 20px rgba(0,0,0,0.12)',
+        }}
+        transition={{ duration: 0.18, ease: easing }}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: 12,
-          padding: '10px 18px 10px 10px',
+          gap: 10,
+          padding: '8px 18px 8px 8px',
           background: '#ffffff',
           borderRadius: 980,
           border: '0.5px solid rgba(60,60,67,0.15)',
-          boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
           textDecoration: 'none',
-          transition: 'all 0.18s ease',
-        }}
-        onMouseEnter={e => {
-          const el = e.currentTarget as HTMLAnchorElement;
-          el.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';
-          el.style.transform = 'translateY(-1px)';
-          el.style.borderColor = 'rgba(153,0,0,0.3)';
-        }}
-        onMouseLeave={e => {
-          const el = e.currentTarget as HTMLAnchorElement;
-          el.style.boxShadow = '0 1px 6px rgba(0,0,0,0.07)';
-          el.style.transform = 'translateY(0)';
-          el.style.borderColor = 'rgba(60,60,67,0.15)';
+          cursor: 'pointer',
         }}
       >
         <img
           src="/caleb-usc.jpg"
           alt="Caleb Newton"
           style={{
-            width: 36,
-            height: 36,
+            width: 34,
+            height: 34,
             borderRadius: '50%',
             objectFit: 'cover',
             objectPosition: 'center 30%',
-            border: '1.5px solid rgba(153,0,0,0.25)',
+            border: '1.5px solid rgba(153,0,0,0.2)',
+            flexShrink: 0,
           }}
         />
-        <div>
+        <div style={{ textAlign: 'left' }}>
           <p
             style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+              fontFamily: sfText,
               fontSize: 10,
               fontWeight: 600,
               color: '#8e8e93',
-              letterSpacing: '0.5px',
+              letterSpacing: '0.6px',
               textTransform: 'uppercase',
               lineHeight: 1,
               marginBottom: 3,
@@ -76,7 +80,7 @@ export default function LandingFooter({ onPrivacy, onTerms }: LandingFooterProps
           </p>
           <p
             style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+              fontFamily: sfText,
               fontSize: 14,
               fontWeight: 600,
               color: '#1c1c1e',
@@ -90,35 +94,14 @@ export default function LandingFooter({ onPrivacy, onTerms }: LandingFooterProps
             <ExternalLink style={{ width: 11, height: 11, color: '#8e8e93' }} />
           </p>
         </div>
-      </a>
-
-      {/* Made for USC */}
-      <p
-        style={{
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-          fontSize: 13,
-          color: '#8e8e93',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 5,
-        }}
-      >
-        Made with too much caffeine for USC students
-        <GraduationCap style={{ width: 14, height: 14, color: '#990000' }} />
-      </p>
+      </motion.a>
 
       {/* Legal links */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 16,
-        }}
-      >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <button
           onClick={onPrivacy}
           style={{
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+            fontFamily: sfText,
             fontSize: 12,
             fontWeight: 500,
             color: '#8e8e93',
@@ -131,13 +114,13 @@ export default function LandingFooter({ onPrivacy, onTerms }: LandingFooterProps
           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#990000'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#8e8e93'; }}
         >
-          Privacy Policy
+          Privacy
         </button>
-        <span style={{ color: 'rgba(60,60,67,0.2)', fontSize: 12 }}>&bull;</span>
+        <span style={{ color: 'rgba(60,60,67,0.2)', fontSize: 12, lineHeight: 1 }}>&middot;</span>
         <button
           onClick={onTerms}
           style={{
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+            fontFamily: sfText,
             fontSize: 12,
             fontWeight: 500,
             color: '#8e8e93',
@@ -150,25 +133,25 @@ export default function LandingFooter({ onPrivacy, onTerms }: LandingFooterProps
           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#990000'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#8e8e93'; }}
         >
-          Terms of Service
+          Terms
         </button>
       </div>
 
       {/* Disclaimer */}
       <p
         style={{
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+          fontFamily: sfText,
           fontSize: 11,
           color: 'rgba(60,60,67,0.35)',
-          textAlign: 'center',
-          maxWidth: 480,
+          maxWidth: 460,
           lineHeight: 1.5,
           padding: '0 16px',
+          margin: 0,
         }}
       >
-        USC Cook Scale is an independent student project. "USC" and "University of Southern California"
-        are trademarks of the University of Southern California.
+        USC Cook Scale is an independent student project. "USC" and "University of Southern
+        California" are trademarks of the University of Southern California.
       </p>
-    </div>
+    </motion.footer>
   );
 }

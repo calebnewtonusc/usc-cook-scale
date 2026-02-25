@@ -1,125 +1,160 @@
+import { motion } from 'framer-motion';
 import { Upload, Search, Flame } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+const sfDisplay = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif";
+const sfText = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif";
+const easing = [0.25, 0.46, 0.45, 0.94] as const;
 
 interface Step {
   icon: ReactNode;
   number: string;
   title: string;
   description: string;
-  iconColor: string;
-  iconBg: string;
 }
 
 const steps: Step[] = [
   {
-    icon: <Upload style={{ width: 22, height: 22 }} />,
+    icon: <Upload style={{ width: 24, height: 24, color: '#ffffff' }} />,
     number: '01',
     title: 'Upload Your Schedule',
-    description: 'Paste text, upload a PDF/screenshot, or drop a calendar file. Our AI reads any format from WeReg or your email.',
-    iconColor: '#0066cc',
-    iconBg: 'rgba(0,102,204,0.1)',
+    description:
+      'Paste text, upload a PDF or screenshot, or drop a calendar file. Our AI reads any format from WeReg or your email.',
   },
   {
-    icon: <Search style={{ width: 22, height: 22 }} />,
+    icon: <Search style={{ width: 24, height: 24, color: '#ffffff' }} />,
     number: '02',
     title: 'AI Deep Research',
-    description: 'We scan RateMyProfessors, scrub Reddit, and aggregate thousands of student experiences — all in real time.',
-    iconColor: '#6e3bc9',
-    iconBg: 'rgba(110,59,201,0.1)',
+    description:
+      'We scan RateMyProfessors, scrub Reddit r/USC, and aggregate thousands of student experiences — all in real time.',
   },
   {
-    icon: <Flame style={{ width: 22, height: 22 }} />,
+    icon: <Flame style={{ width: 24, height: 24, color: '#ffffff' }} />,
     number: '03',
     title: 'Get Your Score',
-    description: 'Receive your Cook Scale score, per-professor breakdown, workload warnings, survival tips, and source links.',
-    iconColor: '#990000',
-    iconBg: 'rgba(153,0,0,0.1)',
+    description:
+      'Receive your Cook Scale score, per-professor breakdown, workload warnings, survival tips, and source links.',
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: easing },
+  },
+};
+
 export default function HowItWorksSection() {
   return (
-    <div style={{ marginBottom: 64 }}>
-      <div style={{ textAlign: 'center', marginBottom: 32 }}>
-        <h2
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
+      variants={containerVariants}
+      style={{ marginBottom: 72 }}
+    >
+      {/* Section header */}
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 24 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easing } },
+        }}
+        style={{ textAlign: 'center', marginBottom: 40 }}
+      >
+        <p
           style={{
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
-            fontWeight: 800,
-            fontSize: 28,
-            letterSpacing: '-0.4px',
-            color: '#1c1c1e',
-            marginBottom: 6,
+            fontFamily: sfText,
+            fontSize: 12,
+            fontWeight: 600,
+            letterSpacing: '1px',
+            textTransform: 'uppercase',
+            color: '#8e8e93',
+            marginBottom: 10,
           }}
         >
           How It Works
-        </h2>
-        <p
+        </p>
+        <h2
           style={{
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-            fontSize: 15,
-            color: '#8e8e93',
+            fontFamily: sfDisplay,
+            fontWeight: 800,
+            fontSize: 'clamp(32px, 5vw, 42px)',
+            letterSpacing: '-1px',
+            color: '#1c1c1e',
+            margin: 0,
+            lineHeight: 1.1,
           }}
         >
-          Three steps to knowing exactly what you're in for
-        </p>
-      </div>
+          Three steps to your score
+        </h2>
+      </motion.div>
 
+      {/* Step cards grid */}
       <div
-        style={{
-          display: 'grid',
-          gap: 12,
-        }}
+        style={{ display: 'grid', gap: 16, position: 'relative' }}
         className="md:grid-cols-3"
       >
         {steps.map((step, i) => (
-          <div
+          <motion.div
             key={step.number}
+            variants={cardVariants}
+            whileHover={{
+              y: -3,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+            }}
+            transition={{ duration: 0.2, ease: easing }}
             style={{
               background: '#ffffff',
-              borderRadius: 16,
+              borderRadius: 20,
               border: '0.5px solid rgba(60,60,67,0.1)',
-              boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
-              padding: '24px 22px',
+              boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+              padding: 28,
               position: 'relative',
-              transition: 'box-shadow 0.2s ease',
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 6px rgba(0,0,0,0.07)';
+              overflow: 'hidden',
+              cursor: 'default',
             }}
           >
-            {/* Step number — watermark */}
+            {/* Watermark step number */}
             <div
+              aria-hidden
               style={{
                 position: 'absolute',
                 top: 16,
-                right: 18,
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+                right: 20,
+                fontFamily: sfDisplay,
                 fontWeight: 900,
-                fontSize: 36,
-                color: 'rgba(60,60,67,0.06)',
+                fontSize: 80,
                 lineHeight: 1,
-                letterSpacing: '-1px',
+                letterSpacing: '-3px',
+                color: 'rgba(153,0,0,0.06)',
                 userSelect: 'none',
+                pointerEvents: 'none',
               }}
             >
               {step.number}
             </div>
 
-            {/* Icon */}
+            {/* Icon circle */}
             <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 48,
-                height: 48,
-                borderRadius: 14,
-                background: step.iconBg,
-                color: step.iconColor,
-                marginBottom: 16,
+                width: 52,
+                height: 52,
+                borderRadius: '50%',
+                background: '#990000',
+                marginBottom: 20,
+                flexShrink: 0,
               }}
             >
               {step.icon}
@@ -127,48 +162,61 @@ export default function HowItWorksSection() {
 
             <h3
               style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+                fontFamily: sfDisplay,
                 fontWeight: 700,
-                fontSize: 16,
+                fontSize: 18,
                 color: '#1c1c1e',
-                marginBottom: 8,
-                letterSpacing: '-0.2px',
+                letterSpacing: '-0.3px',
+                marginBottom: 10,
               }}
             >
               {step.title}
             </h3>
             <p
               style={{
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-                fontSize: 14,
+                fontFamily: sfText,
+                fontSize: 15,
                 color: '#3a3a3c',
-                lineHeight: 1.55,
+                lineHeight: 1.6,
+                margin: 0,
               }}
             >
               {step.description}
             </p>
 
-            {/* Connector chevron for non-last items (desktop) */}
+            {/* Connector arrow — desktop only, not last item */}
             {i < steps.length - 1 && (
               <div
                 className="hidden md:block"
                 style={{
                   position: 'absolute',
-                  right: -14,
+                  right: -12,
                   top: '50%',
                   transform: 'translateY(-50%)',
                   zIndex: 10,
-                  color: 'rgba(60,60,67,0.25)',
-                  fontSize: 22,
-                  fontWeight: 300,
+                  width: 24,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                ›
+                {/* Dashed line connector */}
+                <svg width="24" height="2" viewBox="0 0 24 2" fill="none">
+                  <line
+                    x1="0"
+                    y1="1"
+                    x2="24"
+                    y2="1"
+                    stroke="#e5e5ea"
+                    strokeWidth="1.5"
+                    strokeDasharray="4 3"
+                  />
+                </svg>
               </div>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.section>
   );
 }
