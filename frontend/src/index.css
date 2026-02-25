@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
   --usc-red: #990000;
   --usc-gold: #FFCC00;
 }
@@ -21,7 +19,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(160deg, #fff5f5 0%, #fffbeb 40%, #fff5f5 100%);
+  background: #f2f2f7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -31,7 +29,7 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f2f2f7;
 }
 ::-webkit-scrollbar-thumb {
   background: #990000;
@@ -43,63 +41,119 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-cook-red hover:bg-cook-red-dark text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-usc hover:shadow-usc-lg;
+    @apply text-white font-bold py-3 px-6 transition-all duration-200 active:scale-95;
+    background: #990000;
+    border-radius: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+    letter-spacing: -0.1px;
+  }
+  .btn-primary:hover {
+    background: #7a0000;
   }
 
   .btn-secondary {
-    @apply bg-cook-yellow hover:bg-cook-yellow-dark text-gray-900 font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-gold;
+    @apply font-bold py-3 px-6 transition-all duration-200 active:scale-95;
+    background: #FFCC00;
+    color: #1c1c1e;
+    border-radius: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+  }
+  .btn-secondary:hover {
+    background: #e6b800;
   }
 
   .btn-outline {
-    @apply border-2 border-cook-red text-cook-red hover:bg-cook-red hover:text-white font-bold py-3 px-6 rounded-xl transition-all duration-200;
+    @apply border-2 border-cook-red text-cook-red hover:bg-cook-red hover:text-white font-bold py-3 px-6 transition-all duration-200;
+    border-radius: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
   }
 
   .btn-ghost {
-    @apply text-gray-600 hover:text-cook-red hover:bg-red-50 font-medium py-2 px-4 rounded-lg transition-all duration-200;
+    @apply text-gray-600 hover:text-cook-red font-medium py-2 px-4 transition-all duration-200;
+    border-radius: 10px;
+  }
+  .btn-ghost:hover {
+    background: rgba(153, 0, 0, 0.06);
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-card p-6 transition-shadow duration-200;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+    border: 0.5px solid rgba(60, 60, 67, 0.1);
+    @apply p-6 transition-shadow duration-200;
   }
 
   .card-hover {
-    @apply card hover:shadow-card-hover;
+    @apply card;
+  }
+  .card-hover:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
   .input-field {
-    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cook-red focus:outline-none transition-all duration-200 bg-white placeholder-gray-400;
+    @apply w-full px-4 py-3 focus:outline-none transition-all duration-200 bg-white placeholder-gray-400;
+    border: 1.5px solid rgba(60, 60, 67, 0.2);
+    border-radius: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-size: 15px;
+    color: #1c1c1e;
   }
-
   .input-field:focus {
+    border-color: #990000;
     box-shadow: 0 0 0 3px rgba(153, 0, 0, 0.1);
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide;
+    @apply inline-flex items-center gap-1;
+    padding: 3px 10px;
+    border-radius: 980px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   }
 
   .badge-easy {
-    @apply badge bg-emerald-100 text-emerald-800 border border-emerald-200;
+    @apply badge;
+    background: rgba(52, 199, 89, 0.12);
+    color: #1a7a34;
+    border: 0.5px solid rgba(52, 199, 89, 0.3);
   }
 
   .badge-medium {
-    @apply badge bg-amber-100 text-amber-800 border border-amber-200;
+    @apply badge;
+    background: rgba(255, 149, 0, 0.12);
+    color: #a05a00;
+    border: 0.5px solid rgba(255, 149, 0, 0.3);
   }
 
   .badge-hard {
-    @apply badge bg-orange-100 text-orange-800 border border-orange-200;
+    @apply badge;
+    background: rgba(255, 69, 0, 0.1);
+    color: #c03800;
+    border: 0.5px solid rgba(255, 69, 0, 0.25);
   }
 
   .badge-brutal {
-    @apply badge bg-red-100 text-red-800 border border-red-200;
+    @apply badge;
+    background: rgba(153, 0, 0, 0.1);
+    color: #990000;
+    border: 0.5px solid rgba(153, 0, 0, 0.25);
   }
 
   .section-title {
-    @apply text-3xl font-black text-gray-900 mb-2;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    color: #1c1c1e;
+    @apply text-3xl mb-2;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   }
 
   .section-subtitle {
-    @apply text-gray-600 text-lg;
+    color: #8e8e93;
+    @apply text-base;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   }
 
   /* USC branded gradient text */
@@ -111,9 +165,11 @@ body {
   /* Glass morphism card */
   .glass-card {
     background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    @apply rounded-2xl border border-white/60 shadow-card;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 0.5px solid rgba(60, 60, 67, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
   }
 
   /* Flame animation for high scores */
@@ -129,16 +185,19 @@ body {
   /* Drag zone states */
   .dropzone-active {
     @apply border-cook-red bg-red-50 scale-[1.02];
-    box-shadow: 0 0 0 4px rgba(153, 0, 0, 0.15), 0 8px 32px rgba(153, 0, 0, 0.2);
+    box-shadow: 0 0 0 4px rgba(153, 0, 0, 0.12), 0 8px 32px rgba(153, 0, 0, 0.12);
   }
 
   .dropzone-idle {
-    @apply border-gray-300 hover:border-cook-red hover:bg-red-50/50;
+    @apply border-gray-300 hover:border-cook-red;
+  }
+  .dropzone-idle:hover {
+    background: rgba(153, 0, 0, 0.03);
   }
 
   .dropzone-success {
     @apply border-emerald-400 bg-emerald-50;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
   }
 
   /* Star rating */
@@ -186,7 +245,7 @@ body {
 
 /* Shimmer loading effect */
 .shimmer {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -207,11 +266,12 @@ body {
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.85);
+  background: rgba(28, 28, 30, 0.88);
   color: white;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.75rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   white-space: nowrap;
   pointer-events: none;
   z-index: 10;
@@ -229,7 +289,7 @@ body {
 
   .card {
     box-shadow: none;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(60, 60, 67, 0.15);
   }
 }
 

@@ -1,21 +1,74 @@
 const stats = [
-  { value: '5+', label: 'Data Sources', sub: 'RMP, Reddit, Reviews', color: 'text-cook-red' },
-  { value: '100%', label: 'AI-Powered', sub: 'Claude Sonnet 4.5', color: 'text-purple-600' },
-  { value: '~30s', label: 'Analysis Time', sub: 'Lightning fast research', color: 'text-blue-600' },
-  { value: 'Free', label: 'Always', sub: 'No account needed', color: 'text-emerald-600' },
+  { value: '5+', label: 'Data Sources', sub: 'RMP, Reddit & more' },
+  { value: '100%', label: 'AI-Powered', sub: 'Claude Sonnet 4.5' },
+  { value: '~30s', label: 'Analysis Time', sub: 'Lightning fast' },
+  { value: 'Free', label: 'Always', sub: 'No account needed' },
 ];
 
 export default function StatsBanner() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-16">
-      {stats.map(({ value, label, sub, color }) => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: 12,
+        marginBottom: 64,
+      }}
+      className="md:grid-cols-4"
+    >
+      {stats.map(({ value, label, sub }) => (
         <div
           key={label}
-          className="glass-card p-4 text-center hover:shadow-card-hover transition-shadow duration-200"
+          style={{
+            background: '#ffffff',
+            borderRadius: 16,
+            border: '0.5px solid rgba(60,60,67,0.1)',
+            boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+            padding: '20px 16px',
+            textAlign: 'center',
+            transition: 'box-shadow 0.2s ease',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 6px rgba(0,0,0,0.06)';
+          }}
         >
-          <div className={`text-3xl font-black mb-1 ${color}`}>{value}</div>
-          <div className="text-sm font-bold text-gray-800">{label}</div>
-          <div className="text-xs text-gray-400 mt-0.5">{sub}</div>
+          <div
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+              fontWeight: 800,
+              fontSize: 30,
+              letterSpacing: '-0.4px',
+              color: '#990000',
+              lineHeight: 1,
+              marginBottom: 6,
+            }}
+          >
+            {value}
+          </div>
+          <div
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+              fontWeight: 600,
+              fontSize: 13,
+              color: '#1c1c1e',
+              marginBottom: 2,
+            }}
+          >
+            {label}
+          </div>
+          <div
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+              fontSize: 11,
+              color: '#8e8e93',
+              letterSpacing: '0.1px',
+            }}
+          >
+            {sub}
+          </div>
         </div>
       ))}
     </div>

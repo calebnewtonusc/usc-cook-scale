@@ -15,13 +15,15 @@ interface LandingPageProps {
 
 export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPageProps) {
   return (
-    <div className="min-h-screen">
-      {/* Subtle top gradient backdrop */}
-      <div className="fixed inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse at top, rgba(153, 0, 0, 0.04) 0%, transparent 60%)'
-      }} />
-
-      <div className="relative max-w-4xl mx-auto px-4 py-12 md:py-16">
+    <div style={{ minHeight: '100vh' }}>
+      <div
+        style={{
+          position: 'relative',
+          maxWidth: 896,
+          margin: '0 auto',
+          padding: '48px 16px 64px',
+        }}
+      >
         <HeroSection onStart={onStart} />
         <StatsBanner />
         <HowItWorksSection />
@@ -30,21 +32,86 @@ export default function LandingPage({ onStart, onPrivacy, onTerms }: LandingPage
         <CookScaleLegend />
 
         {/* Final CTA */}
-        <div className="text-center mb-12 py-12 px-6 rounded-3xl bg-gradient-to-br from-cook-red/5 to-cook-yellow/5 border border-cook-red/10">
-          <h2 className="text-3xl font-black text-gray-900 mb-3">
+        <div
+          style={{
+            textAlign: 'center',
+            marginBottom: 48,
+            padding: '48px 32px',
+            borderRadius: 24,
+            background: 'rgba(255,255,255,0.92)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '0.5px solid rgba(60,60,67,0.1)',
+            boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+              fontWeight: 800,
+              fontSize: 28,
+              letterSpacing: '-0.4px',
+              color: '#1c1c1e',
+              marginBottom: 10,
+            }}
+          >
             Ready to find out the truth?
           </h2>
-          <p className="text-gray-500 mb-6 text-base">
+          <p
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+              fontSize: 15,
+              color: '#8e8e93',
+              marginBottom: 28,
+            }}
+          >
             Join USC students who've already checked their schedules
           </p>
           <button
             onClick={onStart}
-            className="inline-flex items-center gap-2 btn-primary text-lg px-10 py-4 shadow-usc-lg"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              background: '#990000',
+              color: '#ffffff',
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+              fontWeight: 700,
+              fontSize: 17,
+              letterSpacing: '-0.2px',
+              padding: '16px 36px',
+              borderRadius: 980,
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.18s ease',
+              boxShadow: '0 2px 12px rgba(153,0,0,0.28)',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLButtonElement;
+              el.style.background = '#7a0000';
+              el.style.boxShadow = '0 4px 20px rgba(153,0,0,0.35)';
+              el.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLButtonElement;
+              el.style.background = '#990000';
+              el.style.boxShadow = '0 2px 12px rgba(153,0,0,0.28)';
+              el.style.transform = 'translateY(0)';
+            }}
           >
-            <Flame className="w-5 h-5" />
+            <Flame style={{ width: 20, height: 20 }} />
             Get My Cook Scale Score
           </button>
-          <p className="text-xs text-gray-400 mt-3">Takes about 15–30 seconds</p>
+          <p
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+              fontSize: 12,
+              color: '#8e8e93',
+              marginTop: 12,
+            }}
+          >
+            Takes about 15–30 seconds
+          </p>
         </div>
 
         <LandingFooter onPrivacy={onPrivacy} onTerms={onTerms} />

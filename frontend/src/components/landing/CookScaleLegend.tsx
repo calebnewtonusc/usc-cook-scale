@@ -1,101 +1,193 @@
-const levels = [
+interface Level {
+  range: string;
+  label: string;
+  emoji: string;
+  desc: string;
+  accentColor: string;
+  accentBg: string;
+  barColor: string;
+  widthPct: number;
+}
+
+const levels: Level[] = [
   {
     range: '0–20',
     label: 'Raw',
     emoji: '😎',
     desc: 'Light semester, minimal stress. Go touch grass.',
-    bg: 'bg-emerald-50',
-    border: 'border-emerald-300',
-    text: 'text-emerald-800',
-    bar: 'bg-emerald-400',
-    width: 'w-[20%]',
+    accentColor: '#1a7a34',
+    accentBg: 'rgba(52,199,89,0.1)',
+    barColor: '#34C759',
+    widthPct: 20,
   },
   {
     range: '21–35',
     label: 'Lightly Toasted',
     emoji: '🌡️',
     desc: 'Manageable with good study habits.',
-    bg: 'bg-lime-50',
-    border: 'border-lime-300',
-    text: 'text-lime-800',
-    bar: 'bg-lime-400',
-    width: 'w-[35%]',
+    accentColor: '#4a8000',
+    accentBg: 'rgba(130,198,0,0.1)',
+    barColor: '#82C600',
+    widthPct: 35,
   },
   {
     range: '36–50',
     label: 'Medium',
     emoji: '🔥',
     desc: 'Standard USC workload. You signed up for this.',
-    bg: 'bg-amber-50',
-    border: 'border-amber-300',
-    text: 'text-amber-800',
-    bar: 'bg-amber-400',
-    width: 'w-[50%]',
+    accentColor: '#a05a00',
+    accentBg: 'rgba(255,149,0,0.1)',
+    barColor: '#FF9500',
+    widthPct: 50,
   },
   {
     range: '51–65',
     label: 'Well Done',
     emoji: '🔥🔥',
     desc: 'Challenging but doable. Start early, stay consistent.',
-    bg: 'bg-orange-50',
-    border: 'border-orange-300',
-    text: 'text-orange-800',
-    bar: 'bg-orange-400',
-    width: 'w-[65%]',
+    accentColor: '#c03800',
+    accentBg: 'rgba(255,69,0,0.1)',
+    barColor: '#FF4500',
+    widthPct: 65,
   },
   {
     range: '66–80',
     label: 'Extra Crispy',
     emoji: '🔥🔥🔥',
     desc: 'Very demanding. Plan every single week.',
-    bg: 'bg-red-50',
-    border: 'border-red-300',
-    text: 'text-red-800',
-    bar: 'bg-red-400',
-    width: 'w-[80%]',
+    accentColor: '#cc1500',
+    accentBg: 'rgba(220,38,38,0.1)',
+    barColor: '#dc2626',
+    widthPct: 80,
   },
   {
     range: '81–100',
     label: 'Absolutely Cooked',
     emoji: '💀',
     desc: 'Pray. Also: RateMyProfessors is your best friend now.',
-    bg: 'bg-rose-50',
-    border: 'border-rose-400',
-    text: 'text-rose-900',
-    bar: 'bg-rose-600',
-    width: 'w-full',
+    accentColor: '#990000',
+    accentBg: 'rgba(153,0,0,0.1)',
+    barColor: '#990000',
+    widthPct: 100,
   },
 ];
 
 export default function CookScaleLegend() {
   return (
-    <div className="mb-16">
-      <div className="text-center mb-8">
-        <h2 className="section-title">The Cooked Scale</h2>
-        <p className="section-subtitle">From "Chill" to "Send Help" — where does your schedule land?</p>
+    <div style={{ marginBottom: 64 }}>
+      <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <h2
+          style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+            fontWeight: 800,
+            fontSize: 28,
+            letterSpacing: '-0.4px',
+            color: '#1c1c1e',
+            marginBottom: 6,
+          }}
+        >
+          The Cooked Scale
+        </h2>
+        <p
+          style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+            fontSize: 15,
+            color: '#8e8e93',
+          }}
+        >
+          From "Chill" to "Send Help" — where does your schedule land?
+        </p>
       </div>
 
-      <div className="space-y-3">
-        {levels.map(({ range, label, emoji, desc, bg, border, text, bar, width }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {levels.map(({ range, label, emoji, desc, accentColor, accentBg, barColor, widthPct }) => (
           <div
             key={range}
-            className={`${bg} border ${border} rounded-2xl p-4 flex items-center gap-4 hover:shadow-sm transition-shadow duration-200`}
+            style={{
+              background: '#ffffff',
+              borderRadius: 14,
+              border: '0.5px solid rgba(60,60,67,0.1)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+              padding: '14px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 14,
+              transition: 'box-shadow 0.2s ease',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 3px 14px rgba(0,0,0,0.09)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 1px 4px rgba(0,0,0,0.05)';
+            }}
           >
-            {/* Range label */}
-            <div className={`text-xs font-black ${text} w-14 text-center flex-shrink-0`}>{range}</div>
+            {/* Range badge */}
+            <div
+              style={{
+                background: accentBg,
+                color: accentColor,
+                borderRadius: 980,
+                padding: '3px 10px',
+                fontSize: 11,
+                fontWeight: 700,
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                letterSpacing: '0.2px',
+                flexShrink: 0,
+                minWidth: 52,
+                textAlign: 'center',
+              }}
+            >
+              {range}
+            </div>
 
             {/* Progress bar */}
-            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
-              <div className={`h-full ${bar} rounded-full ${width}`} />
+            <div
+              style={{
+                width: 80,
+                height: 5,
+                background: 'rgba(60,60,67,0.1)',
+                borderRadius: 980,
+                overflow: 'hidden',
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  height: '100%',
+                  width: `${widthPct}%`,
+                  background: barColor,
+                  borderRadius: 980,
+                }}
+              />
             </div>
 
             {/* Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{emoji}</span>
-                <span className={`font-black text-base ${text}`}>{label}</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 15, lineHeight: 1 }}>{emoji}</span>
+                <span
+                  style={{
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    color: '#1c1c1e',
+                    letterSpacing: '-0.1px',
+                  }}
+                >
+                  {label}
+                </span>
               </div>
-              <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
+              <p
+                style={{
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+                  fontSize: 12,
+                  color: '#8e8e93',
+                  marginTop: 2,
+                  lineHeight: 1.4,
+                }}
+              >
+                {desc}
+              </p>
             </div>
           </div>
         ))}
