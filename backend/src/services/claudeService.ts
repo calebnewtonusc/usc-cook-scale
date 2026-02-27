@@ -9,6 +9,7 @@ export async function determineClassType(courseName: string): Promise<'STEM' | '
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 10,
+      temperature: 0,
       messages: [{
         role: 'user',
         content: `Determine if this college course is STEM or HUMANITIES:
@@ -38,6 +39,7 @@ export async function parseScheduleText(scheduleText: string): Promise<Array<{co
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 2000,
+      temperature: 0,
       messages: [{
         role: 'user',
         content: `You are an expert at parsing USC course schedules from any format - structured tables, conversational text, bullet points, or natural language.
