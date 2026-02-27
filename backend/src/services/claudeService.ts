@@ -7,7 +7,7 @@ const anthropic = new Anthropic({
 export async function determineClassType(courseName: string): Promise<'STEM' | 'HUMANITIES'> {
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: 'claude-sonnet-4-6',
       max_tokens: 10,
       messages: [{
         role: 'user',
@@ -36,7 +36,7 @@ HUMANITIES includes: Psychology, English, History, GE courses, Arts, Business, S
 export async function parseScheduleText(scheduleText: string): Promise<Array<{courseName: string, professor: string, units: number}>> {
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2000,
       messages: [{
         role: 'user',
