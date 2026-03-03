@@ -385,6 +385,8 @@ function ClassCard({ cls, index }: { cls: ClassAnalysis; index: number }) {
 
   return (
     <div
+      data-aos="fade-up"
+      data-aos-delay={String(index * 80)}
       className="card shadow-md border border-gray-100 overflow-hidden transition-all duration-300"
       style={{ animationDelay: `${index * 0.1}s` }}
     >

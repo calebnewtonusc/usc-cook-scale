@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { AlertTriangle, Lightbulb, BarChart3, Flame, Smile, Meh, Frown, Skull, Bot, Sparkles } from 'lucide-react';
 import type { OverallAnalysis } from '../types';
 import CookGauge from './CookGauge';
+import AnimatedScoreCircle from './AnimatedScoreCircle';
 
 interface OverallScoreDisplayV2Props {
   overall: OverallAnalysis;
@@ -90,9 +91,9 @@ export default function OverallScoreDisplayV2({ overall, totalUnits }: OverallSc
 
           {/* Stats row */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-4 text-center border border-white/10">
-              <div className="text-3xl font-black text-cook-yellow">{overall.score}</div>
-              <div className="text-xs text-white/60 mt-1 uppercase tracking-wide">Cook Score</div>
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-4 text-center border border-white/10 flex flex-col items-center justify-center">
+              <AnimatedScoreCircle score={overall.score} size={88} />
+              <div className="text-xs text-white/60 mt-2 uppercase tracking-wide">Cook Score</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-2xl p-4 text-center border border-white/10">
               <div className="text-3xl font-black text-white">{totalUnits}</div>

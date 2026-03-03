@@ -1,5 +1,48 @@
 import { motion } from 'framer-motion';
 import { Flame, AlertTriangle } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import Typed from 'typed.js';
+
+/* ── Typed.js animated subtitle ── */
+function TypedSubtitle() {
+  const elRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!elRef.current) return;
+    const typed = new Typed(elRef.current, {
+      strings: [
+        'Upload your WebReg schedule.',
+        'Get your Cooked Scale score.',
+        'See how hard your semester really is.',
+        'Powered by RateMyProfessors & Reddit.',
+      ],
+      typeSpeed: 45,
+      backSpeed: 25,
+      backDelay: 2200,
+      loop: true,
+      showCursor: true,
+      cursorChar: '|',
+    });
+    return () => typed.destroy();
+  }, []);
+
+  return (
+    <p
+      style={{
+        fontFamily: sfText,
+        fontSize: 15,
+        fontWeight: 400,
+        lineHeight: 1.6,
+        color: '#8e8e93',
+        maxWidth: 440,
+        margin: '0 auto 20px',
+        minHeight: '1.8rem',
+      }}
+    >
+      <span ref={elRef} />
+    </p>
+  );
+}
 
 interface HeroSectionProps {
   onStart: () => void;
@@ -130,12 +173,17 @@ export default function HeroSection({ onStart }: HeroSectionProps) {
             lineHeight: 1.6,
             color: '#3a3a3c',
             maxWidth: 480,
-            margin: '0 auto 36px',
+            margin: '0 auto 16px',
           }}
         >
           Get your AI-powered difficulty score powered by RateMyProfessors,
           Reddit r/USC, and Claude AI.
         </motion.p>
+
+        {/* Typed.js animated tagline */}
+        <motion.div variants={itemVariants} style={{ marginBottom: 20 }}>
+          <TypedSubtitle />
+        </motion.div>
 
         {/* CTA buttons row */}
         <motion.div

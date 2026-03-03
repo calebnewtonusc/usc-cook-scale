@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────
+   AOS – Animate on Scroll
+───────────────────────────────────────────── */
+@import 'aos/dist/aos.css';
+
 :root {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
   --usc-red: #990000;

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AlertCircle, GraduationCap, ArrowLeft, RefreshCw } from 'lucide-react';
+import AOS from 'aos';
 import LandingPage from './components/LandingPage';
 import UploadSchedule from './components/UploadSchedule';
 import CookScoreDisplayV2 from './components/CookScoreDisplayV2';
@@ -15,6 +16,10 @@ const sfPro = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageView>('landing');
+
+  useEffect(() => {
+    AOS.init({ duration: 700, once: true, offset: 50 });
+  }, []);
   const [result, setResult] = useState<AnalysisResultV2 | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
